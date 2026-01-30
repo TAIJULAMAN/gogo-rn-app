@@ -1,4 +1,5 @@
 import { FontAwesome5 } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../../constants/Colors';
@@ -18,6 +19,7 @@ const FEATURES = [
 ];
 
 export default function HomeScreen() {
+  const router = useRouter();
   const [selectedVehicle, setSelectedVehicle] = React.useState('car');
 
   return (
@@ -55,7 +57,10 @@ export default function HomeScreen() {
                   styles.vehicleButton,
                   selectedVehicle === vehicle.id && styles.vehicleButtonActive
                 ]}
-                onPress={() => setSelectedVehicle(vehicle.id)}
+                onPress={() => {
+                  setSelectedVehicle(vehicle.id);
+                  router.push('/(tabs)/create-order');
+                }}
               >
                 <View style={[
                   styles.vehicleIconContainer,
@@ -84,7 +89,7 @@ export default function HomeScreen() {
             ))}
           </View>
 
-          {/* Dubai Skyline Placeholder */}
+          {/* Dubai Skyline */}
           <View style={styles.skylineContainer}>
             <Image
               source={require('../../assets/Dubai.png')}
@@ -176,9 +181,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     marginHorizontal: 20,
     marginTop: 20,
-    marginBottom: 0,
-    borderRadius: 24,
-    padding: 20,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    padding: 24,
     paddingBottom: 0,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
@@ -239,7 +244,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   featureText: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '700',
     color: '#2C3E50',
     marginBottom: 8,
@@ -248,11 +253,9 @@ const styles = StyleSheet.create({
   skylineContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: -24,
   },
   skylineImage: {
     width: '100%',
-    height: 200,
-    resizeMode: 'cover',
+    height: 180,
   },
 });

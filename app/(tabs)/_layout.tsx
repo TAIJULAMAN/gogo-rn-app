@@ -57,6 +57,13 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <Ionicons name="person-outline" size={28} color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="create-order"
+        options={{
+          href: null,
+          tabBarStyle: { display: 'flex' }, // Ensure tab bar is shown
+        }}
+      />
     </Tabs>
   );
 }
