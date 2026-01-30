@@ -5,17 +5,17 @@ import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableO
 import { Button } from '../../components/Button';
 import { Colors } from '../../constants/Colors';
 
-export default function SignInScreen() {
+export default function ForgotPasswordScreen() {
     const router = useRouter();
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const handleSignIn = async () => {
+    const handleSendOTP = async () => {
         setLoading(true);
+        // Simulate API call
         setTimeout(() => {
             setLoading(false);
-            router.replace('/(tabs)');
+            router.push('/(auth)/verify-otp');
         }, 1500);
     };
 
@@ -25,51 +25,36 @@ export default function SignInScreen() {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
             <View style={styles.header}>
-                <Text style={styles.title}>Let's Sign You In</Text>
-                <Text style={styles.subtitle}>Welcome back, you've been missed!</Text>
+                <Text style={styles.title}>Forgot Password?</Text>
+                <Text style={styles.subtitle}>
+                    Don't worry! Enter your email and we'll send you a code to reset your password.
+                </Text>
             </View>
 
             <View style={styles.form}>
                 <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Email or Phone Number</Text>
+                    <Text style={styles.label}>Email</Text>
                     <TextInput
                         style={styles.input}
                         placeholder="user@example.com"
                         value={email}
                         onChangeText={setEmail}
                         autoCapitalize="none"
+                        keyboardType="email-address"
                     />
                 </View>
-
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Password</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="••••••••"
-                        value={password}
-                        onChangeText={setPassword}
-                        secureTextEntry
-                    />
-                </View>
-
-                <TouchableOpacity
-                    style={styles.forgotPassword}
-                    onPress={() => router.push('/(auth)/forgot-password')}
-                >
-                    <Text style={styles.linkText}>Forgot Password?</Text>
-                </TouchableOpacity>
 
                 <Button
-                    title="Sign In"
-                    onPress={handleSignIn}
+                    title="Send Code"
+                    onPress={handleSendOTP}
                     style={{ marginTop: 24 }}
                     loading={loading}
                 />
 
                 <View style={styles.footer}>
-                    <Text style={styles.footerText}>Don't have an account? </Text>
-                    <TouchableOpacity onPress={() => router.push('/(auth)/sign-up')}>
-                        <Text style={styles.linkText}>Sign Up</Text>
+                    <Text style={styles.footerText}>Remember your password? </Text>
+                    <TouchableOpacity onPress={() => router.back()}>
+                        <Text style={styles.linkText}>Sign In</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -96,6 +81,7 @@ const styles = StyleSheet.create({
     subtitle: {
         fontSize: 16,
         color: '#666',
+        lineHeight: 24,
     },
     form: {
         width: '100%',
@@ -117,15 +103,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         fontSize: 16,
         backgroundColor: '#F9F9F9',
-    },
-    forgotPassword: {
-        alignSelf: 'flex-end',
-        marginBottom: 24,
-        color: Colors.primaryDark,
-    },
-    forgotPasswordText: {
-        color: '#666',
-        fontWeight: '600',
     },
     footer: {
         flexDirection: 'row',
