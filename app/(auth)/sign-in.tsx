@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     linkText: {
-        color: Colors.light.primaryDark,
+        color: Colors.primaryDark,
         fontWeight: '700',
         fontSize: 15,
     },

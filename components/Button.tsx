@@ -28,18 +28,18 @@ export function Button({
     const getBackgroundColor = () => {
         if (disabled) return '#E0E0E0';
         switch (variant) {
-            case 'primary': return Colors.light.primary;
-            case 'secondary': return Colors.light.secondary;
+            case 'primary': return Colors.primary;
+            case 'secondary': return Colors.secondary;
             case 'outline': return 'transparent';
             case 'ghost': return 'transparent';
-            default: return Colors.light.primary;
+            default: return Colors.primary;
         }
     };
 
     const getTextColor = () => {
         if (disabled) return '#999';
         switch (variant) {
-            case 'primary': return '#000'; // Black text on green
+            case 'primary': return '#000';
             case 'secondary': return '#FFF';
             case 'outline': return '#000';
             case 'ghost': return '#666';

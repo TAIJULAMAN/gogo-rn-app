@@ -198,7 +198,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.light.primary, // Green background from screenshot
+    backgroundColor: Colors.primary, // Green background from screenshot
   },
   map: {
     ...StyleSheet.absoluteFillObject,
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   stepActive: {
-    backgroundColor: Colors.light.primary,
+    backgroundColor: Colors.primary,
   },
   stepInactive: {
     backgroundColor: '#ddd',
@@ -352,7 +352,7 @@ const styles = StyleSheet.create({
   },
   actionButtons: {
     flexDirection: 'row',
-    backgroundColor: Colors.light.primary, // Green
+    backgroundColor: Colors.primary, // Green
     borderRadius: 12,
     padding: 12,
     justifyContent: 'space-around',

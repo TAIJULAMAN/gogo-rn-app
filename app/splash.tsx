@@ -8,7 +8,6 @@ export default function SplashScreen() {
     const router = useRouter();
 
     useEffect(() => {
-        // Navigate to onboarding after 2.5 seconds
         const timer = setTimeout(() => {
             router.replace('/onboarding1');
         }, 2500);
@@ -38,7 +37,7 @@ export default function SplashScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.light.primary, // #BEFFB6
+        backgroundColor: Colors.primary,
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 60,

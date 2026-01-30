@@ -1,12 +1,7 @@
 
 import { Stack } from 'expo-router';
-import { useState } from 'react';
-import { useColorScheme } from 'react-native';
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [isFirstLaunch, setIsFirstLaunch] = useState(true); // TODO: check storage
-
   return (
     <Stack>
       <Stack.Screen name="splash" options={{ headerShown: false }} />

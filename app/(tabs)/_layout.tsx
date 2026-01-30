@@ -1,18 +1,14 @@
 
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import { useColorScheme } from 'react-native';
 import { Colors } from '../../constants/Colors';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-  const colors = Colors[colorScheme ?? 'light'];
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: colors.primaryDark,
-        tabBarInactiveTintColor: colors.tabIconDefault,
+        tabBarActiveTintColor: Colors.primaryDark,
+        tabBarInactiveTintColor: Colors.tabIconDefault,
         tabBarStyle: {
           height: 90,
           paddingBottom: 20,
