@@ -105,6 +105,27 @@ export default function CreateOrderScreen() {
                     <View style={styles.savedAddressesContainer}>
                         <Text style={styles.sectionTitle}>Saved Addresses</Text>
                         {[
+                            { name: 'Home', address: 'Apartment 402, Building A, JVC, Dubai', icon: 'home-outline' },
+                            { name: 'Office', address: 'Office 305, Bay Square, Business Bay', icon: 'briefcase-outline' },
+                            { name: 'Gym', address: 'FitRepublik, Sports City, Dubai', icon: 'fitness-outline' },
+                            { name: 'Friend House', address: 'Villa 12, Meadows 4, Dubai', icon: 'people-outline' },
+                            { name: 'Warehouse', address: 'Al Quoz Industrial Area 3, Dubai', icon: 'business-outline' },
+                        ].map((item, index) => (
+                            <TouchableOpacity key={index} style={styles.recentDropItem}>
+                                <View style={styles.iconContainer}>
+                                    <Ionicons name={item.icon as any} size={20} color={Colors.primary} />
+                                </View>
+                                <View style={styles.textContainer}>
+                                    <Text style={styles.recentDropName}>{item.name}</Text>
+                                    <Text style={styles.recentDropAddress}>{item.address}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                    {/* Recent Drops */}
+                    <View style={styles.recentDropsContainer}>
+                        <Text style={styles.sectionTitle}>Recent Drops</Text>
+                        {[
                             { name: 'Jasani LLC', address: 'Building A, JVC, Dubai' },
                             { name: 'Rashed Al Shamsi Advertising', address: 'Office 305, Bay Square, Business Bay' },
                             { name: 'Jasani LLC', address: 'FitRepublik, Sports City, Dubai' },
@@ -112,39 +133,15 @@ export default function CreateOrderScreen() {
                             { name: 'Jasani LLC', address: 'Al Quoz Industrial Area 3, Dubai' },
                         ].map((item, index) => (
                             <TouchableOpacity key={index} style={styles.recentDropItem}>
-                                <Text style={styles.recentDropName}>{item.name}</Text>
-                                <Text style={styles.recentDropAddress}>{item.address}</Text>
+                                <View style={styles.iconContainer}>
+                                    <Ionicons name="location-outline" size={20} color={Colors.primary} />
+                                </View>
+                                <View style={styles.textContainer}>
+                                    <Text style={styles.recentDropName}>{item.name}</Text>
+                                    <Text style={styles.recentDropAddress}>{item.address}</Text>
+                                </View>
                             </TouchableOpacity>
                         ))}
-                    </View>
-                    {/* Recent Drops */}
-                    <View style={styles.recentDropsContainer}>
-                        <Text style={styles.sectionTitle}>Recent Drops</Text>
-
-                        <TouchableOpacity style={styles.recentDropItem}>
-                            <Text style={styles.recentDropName}>Jasani LLC</Text>
-                            <Text style={styles.recentDropAddress}>305, 3rd Floor, Building 3, Bay Square, Business Bay</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.recentDropItem}>
-                            <Text style={styles.recentDropName}>Rashed Al Shamsi Advertising</Text>
-                            <Text style={styles.recentDropAddress}>Behind Haneefa Supermarket, Diera,</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.recentDropItem}>
-                            <Text style={styles.recentDropName}>Jasani LLC</Text>
-                            <Text style={styles.recentDropAddress}>305, 3rd Floor, Building 3, Bay Square, Business Bay</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.recentDropItem}>
-                            <Text style={styles.recentDropName}>Rashed Al Shamsi Advertising</Text>
-                            <Text style={styles.recentDropAddress}>Behind Haneefa Supermarket, Diera,</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.recentDropItem}>
-                            <Text style={styles.recentDropName}>Jasani LLC</Text>
-                            <Text style={styles.recentDropAddress}>305, 3rd Floor, Building 3, Bay Square, Business Bay</Text>
-                        </TouchableOpacity>
                     </View>
                 </ScrollView>
             </View>
@@ -331,18 +328,33 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
     recentDropItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
         paddingVertical: 12,
         borderBottomWidth: 1,
         borderBottomColor: '#F5F5F5',
+    },
+    iconContainer: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        backgroundColor: '#F5F5F5',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 12,
+    },
+    textContainer: {
+        flex: 1,
     },
     recentDropName: {
         fontSize: 15,
         fontWeight: '700',
         color: '#2C3E50',
-        marginBottom: 4,
+        marginBottom: 2,
     },
     recentDropAddress: {
         fontSize: 13,
         color: '#7f8c8d',
+        lineHeight: 18,
     },
 });
