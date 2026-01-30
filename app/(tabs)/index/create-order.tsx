@@ -60,11 +60,11 @@ export default function CreateOrderScreen() {
                         {/* Timeline Line */}
                         <View style={styles.timelineContainer}>
                             <View style={[styles.timelineDot, styles.dotGreen]}>
-                                <Text style={styles.dotText}>A</Text>
+                                <MaterialIcons name="location-on" size={24} color="#4CAF50" />
                             </View>
                             <View style={styles.timelineLine} />
                             <View style={[styles.timelineDot, styles.dotRed]}>
-                                <Text style={styles.dotText}>B</Text>
+                                <MaterialIcons name="location-on" size={24} color="#F44336" />
                             </View>
                         </View>
 
@@ -102,14 +102,24 @@ export default function CreateOrderScreen() {
                     </View>
 
                     {/* Saved Addresses */}
-                    <TouchableOpacity style={styles.savedAddressesButton}>
-                        <Text style={styles.savedAddressesText}>Saved Addresses</Text>
-                        <Ionicons name="chevron-forward" size={20} color="#000" />
-                    </TouchableOpacity>
-
+                    <View style={styles.savedAddressesContainer}>
+                        <Text style={styles.sectionTitle}>Saved Addresses</Text>
+                        {[
+                            { name: 'Jasani LLC', address: 'Building A, JVC, Dubai' },
+                            { name: 'Rashed Al Shamsi Advertising', address: 'Office 305, Bay Square, Business Bay' },
+                            { name: 'Jasani LLC', address: 'FitRepublik, Sports City, Dubai' },
+                            { name: 'Rashed Al Shamsi Advertising', address: 'Villa 12, Meadows 4, Dubai' },
+                            { name: 'Jasani LLC', address: 'Al Quoz Industrial Area 3, Dubai' },
+                        ].map((item, index) => (
+                            <TouchableOpacity key={index} style={styles.recentDropItem}>
+                                <Text style={styles.recentDropName}>{item.name}</Text>
+                                <Text style={styles.recentDropAddress}>{item.address}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </View>
                     {/* Recent Drops */}
                     <View style={styles.recentDropsContainer}>
-                        <Text style={styles.recentDropsTitle}>Recent Drops</Text>
+                        <Text style={styles.sectionTitle}>Recent Drops</Text>
 
                         <TouchableOpacity style={styles.recentDropItem}>
                             <Text style={styles.recentDropName}>Jasani LLC</Text>
@@ -119,6 +129,21 @@ export default function CreateOrderScreen() {
                         <TouchableOpacity style={styles.recentDropItem}>
                             <Text style={styles.recentDropName}>Rashed Al Shamsi Advertising</Text>
                             <Text style={styles.recentDropAddress}>Behind Haneefa Supermarket, Diera,</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.recentDropItem}>
+                            <Text style={styles.recentDropName}>Jasani LLC</Text>
+                            <Text style={styles.recentDropAddress}>305, 3rd Floor, Building 3, Bay Square, Business Bay</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.recentDropItem}>
+                            <Text style={styles.recentDropName}>Rashed Al Shamsi Advertising</Text>
+                            <Text style={styles.recentDropAddress}>Behind Haneefa Supermarket, Diera,</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.recentDropItem}>
+                            <Text style={styles.recentDropName}>Jasani LLC</Text>
+                            <Text style={styles.recentDropAddress}>305, 3rd Floor, Building 3, Bay Square, Business Bay</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
@@ -202,10 +227,12 @@ const styles = StyleSheet.create({
     },
     stepLineContainer: {
         flex: 1,
-        height: 2,
-        backgroundColor: '#E0E0E0',
         marginHorizontal: 4,
         marginTop: 14,
+        borderWidth: 1,
+        borderColor: '#E0E0E0',
+        borderStyle: 'dashed',
+        height: 1,
     },
 
     // Form Styling
@@ -232,10 +259,10 @@ const styles = StyleSheet.create({
     timelineDot: {
         width: 24,
         height: 24,
-        borderRadius: 12,
+        // borderRadius: 12,
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: 2,
+        // borderWidth: 2,
         backgroundColor: '#fff',
     },
     dotGreen: {
@@ -252,11 +279,10 @@ const styles = StyleSheet.create({
     timelineLine: {
         width: 1,
         height: 40,
-        backgroundColor: '#000',
-        borderStyle: 'dotted',
-        borderWidth: 1,
+        borderLeftWidth: 1,
         borderColor: '#000',
-        borderRadius: 1,
+        borderStyle: 'dashed',
+        borderWidth: 1,
         marginVertical: 4,
     },
     inputsWrapper: {
@@ -282,26 +308,16 @@ const styles = StyleSheet.create({
         height: '100%',
         fontSize: 14,
         color: '#333',
+        // @ts-ignore - Web only style
+        outlineWidth: 0,
     },
     targetIcon: {
         padding: 4,
     },
 
     // Saved Addresses
-    savedAddressesButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingVertical: 16,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-        borderColor: '#F0F0F0',
+    savedAddressesContainer: {
         marginBottom: 20,
-    },
-    savedAddressesText: {
-        fontSize: 16,
-        fontWeight: '700',
-        color: '#2C3E50',
     },
 
     // Recent Drops
