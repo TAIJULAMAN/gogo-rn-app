@@ -1,195 +1,98 @@
-import { Ionicons } from '@expo/vector-icons';
-import { useState } from 'react';
-import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Button } from '../../components/Button';
+import { FontAwesome5 } from '@expo/vector-icons';
+import React from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../../constants/Colors';
 
-const { width, height } = Dimensions.get('window');
-
-// Mock Data
 const VEHICLES = [
-  { id: 'bike', name: 'Bike Delivery', price: 78.90, capacity: '20kg', time: '8 mins', icon: require('../../assets/images/react-logo.png') },
-  { id: 'car', name: 'Car Delivery', price: 87.82, capacity: '1050kg', time: '7 mins', icon: require('../../assets/images/react-logo.png') },
-  { id: 'truck', name: 'Truck Delivery', price: 120.00, capacity: '3000kg', time: '15 mins', icon: require('../../assets/images/react-logo.png') },
+  { id: 'bike', name: 'Bike Delivery', icon: 'motorcycle' },
+  { id: 'car', name: 'Car Delivery', icon: 'car-side' },
+  { id: 'truck', name: 'Truck Delivery', icon: 'truck' },
 ];
 
-const STEPS = ['Locations', 'Vehicle', 'Payment'];
+const FEATURES = [
+  'Any Size.',
+  'Any Quantity.',
+  'Any Emirates.',
+  'Multiple Stops.',
+  'Delivered in Minutes.',
+];
 
 export default function HomeScreen() {
-  const [currentStep, setCurrentStep] = useState(0); // 0: Locations, 1: Vehicle, 2: Payment
-  const [selectedVehicle, setSelectedVehicle] = useState(VEHICLES[0].id);
-
-  // Dubai Coordinates (Approx)
-  const initialRegion = {
-    latitude: 25.1972,
-    longitude: 55.2744,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  };
-
-  const renderStepHeader = () => (
-    <View style={styles.stepHeader}>
-      <TouchableOpacity onPress={() => setCurrentStep(Math.max(0, currentStep - 1))}>
-        <Ionicons name="arrow-back" size={24} color="black" />
-      </TouchableOpacity>
-      <Text style={styles.headerTitle}>CREATE ORDER</Text>
-      <View style={{ width: 24 }} />
-    </View>
-  );
-
-  const renderStepper = () => (
-    <View style={styles.stepperContainer}>
-      {STEPS.map((step, index) => (
-        <View key={index} style={styles.stepItem}>
-          <View style={[styles.stepCircle, currentStep >= index ? styles.stepActive : styles.stepInactive]}>
-            <Text style={styles.stepNumber}>{index + 1}</Text>
-          </View>
-          <Text style={styles.stepLabel}>{step}</Text>
-          {index < STEPS.length - 1 && <View style={styles.stepLine} />}
-        </View>
-      ))}
-    </View>
-  );
-
-  const renderLocationsStep = () => (
-    <View style={styles.card}>
-      <Text style={styles.sectionTitle}>Journey Details</Text>
-      <Text style={styles.sectionSubtitle}>From Pickup to Drop off</Text>
-
-      <View style={styles.locationList}>
-        {/* Mock Locations */}
-        <View style={styles.locationItem}>
-          <View style={styles.locationIconContainer}>
-            <View style={[styles.locationIcon, { backgroundColor: '#4CAF50' }]}>
-              <Text style={styles.locationIconText}>A</Text>
-            </View>
-            <View style={styles.dottedLine} />
-          </View>
-          <View style={styles.locationTextContainer}>
-            <Text style={styles.locationName}>Roshan Hegde • +971552239345</Text>
-            <Text style={styles.locationAddress}>3401, Escape Tower, Business Bay, Dubai.</Text>
-          </View>
-        </View>
-
-        <View style={styles.locationItem}>
-          <View style={styles.locationIconContainer}>
-            <View style={[styles.locationIcon, { backgroundColor: '#F44336' }]}>
-              <Text style={styles.locationIconText}>1</Text>
-            </View>
-          </View>
-          <View style={styles.locationTextContainer}>
-            <Text style={styles.locationName}>Roshan Hegde • +971552239345</Text>
-            <Text style={styles.locationAddress}>1609, Elite 8 Sports Residence, Dubai Sports City...</Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.actionButtons}>
-        <TouchableOpacity style={styles.actionButton}>
-          <Ionicons name="add-circle-outline" size={20} color="black" />
-          <Text style={styles.actionButtonText}>Add Stop</Text>
-        </TouchableOpacity>
-        <View style={styles.dividerVertical} />
-        <TouchableOpacity style={styles.actionButton}>
-          <Ionicons name="pencil-outline" size={20} color="black" />
-          <Text style={styles.actionButtonText}>Edit Location</Text>
-        </TouchableOpacity>
-      </View>
-
-      <Button
-        title="Continue to Vehicle"
-        onPress={() => setCurrentStep(1)}
-        style={{ marginTop: 20 }}
-      />
-    </View>
-  );
-
-  const renderVehicleStep = () => (
-    <View style={styles.card}>
-      <Text style={[styles.sectionTitle, { textAlign: 'center', marginBottom: 20 }]}>Choose your rider</Text>
-
-      {VEHICLES.map((vehicle) => (
-        <TouchableOpacity
-          key={vehicle.id}
-          style={[
-            styles.vehicleCard,
-            selectedVehicle === vehicle.id && styles.vehicleCardSelected
-          ]}
-          onPress={() => setSelectedVehicle(vehicle.id)}
-        >
-          <View style={styles.vehicleImageContainer}>
-            {/* Placeholder for Vehicle Image - Using a colored box if image fails */}
-            <View style={{ width: 60, height: 40, backgroundColor: '#eee', borderRadius: 5 }} />
-          </View>
-          <View style={styles.vehicleInfo}>
-            <Text style={styles.vehicleName}>{vehicle.name}</Text>
-            <Text style={styles.vehicleDetails}>{vehicle.capacity} • Just {vehicle.time} away</Text>
-          </View>
-          <Text style={styles.vehiclePrice}>D {vehicle.price}</Text>
-        </TouchableOpacity>
-      ))}
-
-      <Button
-        title="Continue to Payment"
-        onPress={() => setCurrentStep(2)}
-        style={{ marginTop: 20 }}
-      />
-    </View>
-  );
-
-  const renderPaymentStep = () => (
-    <View style={styles.card}>
-      <Text style={[styles.sectionTitle, { textAlign: 'center', marginBottom: 20 }]}>Order Summary</Text>
-
-      <View style={styles.summaryRow}>
-        <Text style={styles.summaryLabel}>Total Distance</Text>
-        <Text style={styles.summaryValue}>28km</Text>
-      </View>
-
-      <View style={[styles.summaryRow, { marginTop: 20 }]}>
-        <Text style={styles.summaryLabel}>Cost</Text>
-        <Text style={styles.summaryValue}>D 74.95</Text>
-      </View>
-      <View style={styles.summaryRow}>
-        <Text style={styles.summaryLabel}>VAT (Value Added Tax)</Text>
-        <Text style={styles.summaryValue}>D 3.95</Text>
-      </View>
-      <View style={styles.summaryRow}>
-        <Text style={[styles.summaryLabel, { fontWeight: 'bold', color: '#000' }]}>Total Delivery Cost</Text>
-        <Text style={[styles.summaryValue, { fontWeight: 'bold', color: '#000' }]}>D 78.90</Text>
-      </View>
-
-      <Button
-        title="Pay Now : D 78.90"
-        onPress={() => alert('Order Placed!')}
-        style={{ marginTop: 30 }}
-      />
-
-      <View style={styles.securePayment}>
-        <Ionicons name="lock-closed" size={16} color="#666" />
-        <Text style={styles.secureText}>Secure Payments • Trusted UAE Payment Partners</Text>
-      </View>
-    </View>
-  );
+  const [selectedVehicle, setSelectedVehicle] = React.useState('car');
 
   return (
     <View style={styles.container}>
-      {/* Map Background - Placeholder for web */}
-      <View style={styles.mapPlaceholder}>
-        <Ionicons name="map-outline" size={48} color="#999" />
-        <Text style={{ color: '#999', marginTop: 10 }}>Map View</Text>
-      </View>
+      <View style={styles.scrollContent}>
+        {/* Header */}
+        <View style={styles.header}>
 
-      {/* Overlay Content */}
-      <View style={styles.overlay}>
-        {renderStepHeader()}
-        {renderStepper()}
+          <View style={styles.userSection}>
+            <View style={styles.avatar}>
+              <Image
+                source={require('../../assets/avatar.jpg')}
+                style={styles.avatarImage}
+                resizeMode="cover"
+              />
+            </View>
+            <View style={styles.userInfo}>
+              <Text style={styles.company}>Md Shah Aman </Text>
+              <View style={styles.userRoleBadge}>
+                <Text style={styles.userRole}>User</Text>
+              </View>
+            </View>
+          </View>
+        </View>
 
-        <ScrollView contentContainerStyle={{ paddingBottom: 100 }} showsVerticalScrollIndicator={false}>
-          {currentStep === 0 && renderLocationsStep()}
-          {currentStep === 1 && renderVehicleStep()}
-          {currentStep === 2 && renderPaymentStep()}
-        </ScrollView>
+        {/* Vehicle Selection Card */}
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Choose your rider</Text>
+
+          <View style={styles.vehicleContainer}>
+            {VEHICLES.map((vehicle) => (
+              <TouchableOpacity
+                key={vehicle.id}
+                style={[
+                  styles.vehicleButton,
+                  selectedVehicle === vehicle.id && styles.vehicleButtonActive
+                ]}
+                onPress={() => setSelectedVehicle(vehicle.id)}
+              >
+                <View style={[
+                  styles.vehicleIconContainer,
+                  selectedVehicle === vehicle.id && styles.vehicleIconContainerActive
+                ]}>
+                  <FontAwesome5
+                    name={vehicle.icon}
+                    size={32}
+                    color={selectedVehicle === vehicle.id ? '#000' : '#666'}
+                  />
+                </View>
+                <Text style={[
+                  styles.vehicleName,
+                  selectedVehicle === vehicle.id && styles.vehicleNameActive
+                ]}>
+                  {vehicle.name}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          {/* Features List */}
+          <View style={styles.featuresContainer}>
+            {FEATURES.map((feature, index) => (
+              <Text key={index} style={styles.featureText}>{feature}</Text>
+            ))}
+          </View>
+
+          {/* Dubai Skyline Placeholder */}
+          <View style={styles.skylineContainer}>
+            <Image
+              source={require('../../assets/Dubai.png')}
+              style={styles.skylineImage}
+              resizeMode="contain"
+            />
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -198,238 +101,158 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.primary, // Green background from screenshot
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-    height: height * 0.5, // Map takes top half
-  },
-  mapPlaceholder: {
-    ...StyleSheet.absoluteFillObject,
-    height: height * 0.5,
-    backgroundColor: '#e0e0e0',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    top: 100, // Start below status bar area
-    backgroundColor: 'transparent',
-  },
-  stepHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    marginBottom: 20,
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: '900',
-    fontStyle: 'italic',
-    color: '#000', // Or very dark green
-  },
-  stepperContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    marginHorizontal: 20,
-    paddingVertical: 15,
-    borderRadius: 12,
-    marginBottom: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  stepItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  stepCircle: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 8,
-  },
-  stepActive: {
     backgroundColor: Colors.primary,
   },
-  stepInactive: {
-    backgroundColor: '#ddd',
+  scrollContent: {
+    paddingBottom: 0,
   },
-  stepNumber: {
+  header: {
+    paddingHorizontal: 24,
+    paddingTop: 60,
+    paddingBottom: 20,
+  },
+  logo: {
+    fontSize: 48,
+    fontWeight: '900',
+    fontStyle: 'italic',
+    color: '#2C3E50',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  greeting: {
+    fontSize: 20,
+    fontWeight: '400',
+    color: '#2C3E50',
+    marginBottom: 8,
+  },
+  company: {
+    fontSize: 32,
+    fontWeight: '800',
+    color: '#2C3E50',
+    lineHeight: 38,
+  },
+  userSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  avatar: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  avatarImage: {
+    width: 56,
+    height: 56,
+  },
+  avatarText: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#fff',
+  },
+  userInfo: {
+    flex: 1,
+  },
+  userRoleBadge: {
+    alignSelf: 'flex-start',
+    marginTop: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 8,
+    backgroundColor: '#F9F9F9',
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+  },
+  userRole: {
     fontSize: 12,
-    fontWeight: 'bold',
-  },
-  stepLabel: {
-    fontSize: 14,
     fontWeight: '600',
-    marginRight: 8,
-  },
-  stepLine: {
-    width: 30,
-    height: 1,
-    backgroundColor: '#ddd',
-    marginRight: 8,
+    color: '#666',
   },
   card: {
     backgroundColor: '#fff',
     marginHorizontal: 20,
-    borderRadius: 20,
-    padding: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-    minHeight: 400,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: 4,
-  },
-  sectionSubtitle: {
-    fontSize: 14,
-    color: '#888',
-    marginBottom: 20,
-  },
-  locationList: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-    paddingBottom: 20,
-    marginBottom: 20,
-  },
-  locationItem: {
-    flexDirection: 'row',
+    marginTop: 20,
     marginBottom: 0,
-    minHeight: 60,
+    borderRadius: 24,
+    padding: 20,
+    paddingBottom: 0,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
+    overflow: 'hidden',
   },
-  locationIconContainer: {
-    alignItems: 'center',
-    width: 40,
+  cardTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#2C3E50',
+    textAlign: 'center',
+    marginBottom: 24,
   },
-  locationIcon: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1,
+  vehicleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 32,
+    gap: 12,
   },
-  locationIconText: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  dottedLine: {
+  vehicleButton: {
     flex: 1,
-    width: 1,
-    backgroundColor: '#ccc',
-    borderStyle: 'dotted',
-    borderWidth: 1,
-    borderColor: '#ccc', // Simplified for RN
-    marginVertical: 4,
-  },
-  locationTextContainer: {
-    flex: 1,
-    paddingLeft: 10,
-  },
-  locationName: {
-    fontSize: 12,
-    color: '#888',
-    marginBottom: 2,
-  },
-  locationAddress: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#333',
-  },
-  actionButtons: {
-    flexDirection: 'row',
-    backgroundColor: Colors.primary, // Green
-    borderRadius: 12,
-    padding: 12,
-    justifyContent: 'space-around',
-    opacity: 0.8,
-  },
-  actionButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  actionButtonText: {
-    marginLeft: 8,
-    fontWeight: '600',
-  },
-  dividerVertical: {
-    width: 1,
-    backgroundColor: '#000',
-    opacity: 0.1,
-  },
-  // Vehicle Step Styles
-  vehicleCard: {
-    flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
     borderRadius: 16,
-    backgroundColor: '#fff', // Or specific blue as per design
-    marginBottom: 12,
-    borderWidth: 1,
-    borderColor: '#eee',
+    borderWidth: 2,
+    borderColor: '#E0E0E0',
+    backgroundColor: '#F9F9F9',
   },
-  vehicleCardSelected: {
-    backgroundColor: '#00BCD4', // Cyan/Blue from screenshot
-    borderColor: '#00BCD4',
+  vehicleButtonActive: {
+    borderColor: Colors.primary,
+    backgroundColor: Colors.primary,
   },
-  vehicleImageContainer: {
-    marginRight: 16,
-  },
-  vehicleInfo: {
-    flex: 1,
-  },
-  vehicleName: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#333', // White if selected logic needed
-  },
-  vehicleDetails: {
-    fontSize: 12,
-    color: '#666',
-  },
-  vehiclePrice: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  // Payment Styles
-  summaryRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 12,
-  },
-  summaryLabel: {
-    fontSize: 14,
-    color: '#888',
-  },
-  summaryValue: {
-    fontSize: 14,
-    color: '#333',
-    fontWeight: '600',
-  },
-  securePayment: {
-    flexDirection: 'row',
+  vehicleIconContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 16,
+    backgroundColor: '#E8E8E8',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
+    marginBottom: 12,
   },
-  secureText: {
-    fontSize: 12,
+  vehicleIconContainerActive: {
+    backgroundColor: '#fff',
+  },
+  vehicleName: {
+    fontSize: 10,
+    fontWeight: '600',
     color: '#666',
-    marginLeft: 6,
+    textAlign: 'center',
+  },
+  vehicleNameActive: {
+    color: '#2C3E50',
+    fontWeight: '700',
+  },
+  featuresContainer: {
+    marginBottom: 32,
+  },
+  featureText: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#2C3E50',
+    marginBottom: 8,
+    lineHeight: 28,
+  },
+  skylineContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: -24,
+  },
+  skylineImage: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
   },
 });
