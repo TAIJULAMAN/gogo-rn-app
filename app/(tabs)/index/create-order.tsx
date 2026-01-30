@@ -2,7 +2,7 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { Colors } from '../../constants/Colors';
+import { Colors } from '../../../constants/Colors';
 
 const STEPS = ['Locations', 'Vehicle', 'Payment'];
 
@@ -51,9 +51,9 @@ export default function CreateOrderScreen() {
             <View style={styles.card}>
                 {renderStepper()}
 
-                <ScrollView showsVerticalScrollIndicator={false}>
+                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
                     <Text style={styles.sectionTitle}>Delivery location</Text>
-                    <Text style={styles.sectionSubtitle}>Choose where to pick up &amp; Drop</Text>
+                    <Text style={styles.sectionSubtitle}>Choose where to pick up & Drop</Text>
 
                     {/* Location Inputs */}
                     <View style={styles.locationContainer}>
@@ -121,9 +121,6 @@ export default function CreateOrderScreen() {
                             <Text style={styles.recentDropAddress}>Behind Haneefa Supermarket, Diera,</Text>
                         </TouchableOpacity>
                     </View>
-
-                    {/* Add bottom padding for scroll content */}
-                    <View style={{ height: 20 }} />
                 </ScrollView>
             </View>
         </View>
@@ -133,7 +130,7 @@ export default function CreateOrderScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.primary, // Green background
+        backgroundColor: Colors.primary,
     },
     header: {
         flexDirection: 'row',
@@ -160,6 +157,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingTop: 20,
     },
+    // Stepper Styling
     stepperContainer: {
         flexDirection: 'row',
         alignItems: 'flex-start',
@@ -207,7 +205,7 @@ const styles = StyleSheet.create({
         height: 2,
         backgroundColor: '#E0E0E0',
         marginHorizontal: 4,
-        marginTop: 14, // Roughly center of 30px circle
+        marginTop: 14,
     },
 
     // Form Styling
@@ -241,10 +239,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     dotGreen: {
-        borderColor: '#4CAF50', // Pickup green
+        borderColor: '#4CAF50',
     },
     dotRed: {
-        borderColor: '#F44336', // Dropoff red
+        borderColor: '#F44336',
     },
     dotText: {
         fontSize: 12,
