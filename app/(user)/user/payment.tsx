@@ -109,7 +109,7 @@ export default function PaymentScreen() {
 
                     <TouchableOpacity
                         style={[styles.payButton, { backgroundColor: '#BEFFB6' }]}
-                        onPress={() => router.push('/(user)/index/payment-success')}
+                        onPress={() => router.push('/(user)/user/payment-success')}
                     >
                         <Text style={styles.payButtonText}>Pay Now</Text>
                     </TouchableOpacity>

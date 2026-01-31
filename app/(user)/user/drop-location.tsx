@@ -6,7 +6,7 @@ import { Colors } from '../../../constants/Colors';
 
 const STEPS = ['Locations', 'Vehicle', 'Checkout', 'Payment'];
 
-export default function PickupLocationScreen() {
+export default function DropLocationScreen() {
     const router = useRouter();
     const [currentStep, setCurrentStep] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
@@ -55,14 +55,14 @@ export default function PickupLocationScreen() {
             <View style={styles.card}>
                 {renderStepper()}
 
-                {/* Pickup Location Title Section */}
+                {/* Drop Location Title Section */}
                 <View style={styles.titleSection}>
                     <View style={styles.locationIconContainer}>
-                        <MaterialIcons name="location-on" size={24} color="#4CAF50" />
+                        <MaterialIcons name="location-on" size={24} color="#F44336" />
                     </View>
                     <View>
-                        <Text style={styles.pageTitle}>Pickup location</Text>
-                        <Text style={styles.pageSubtitle}>Choose where to Pickup</Text>
+                        <Text style={styles.pageTitle}>Drop location</Text>
+                        <Text style={styles.pageSubtitle}>Choose where to drop off</Text>
                     </View>
                 </View>
 
@@ -147,8 +147,8 @@ export default function PickupLocationScreen() {
                             />
                         </View>
 
-                        <TouchableOpacity style={styles.continueButton} onPress={() => router.push('/(user)/index/drop-location')}>
-                            <Text style={styles.continueButtonText}>Continue to Drop Location</Text>
+                        <TouchableOpacity style={[styles.continueButton, { backgroundColor: '#BEFFB6' }]} onPress={() => router.push('/(user)/user/vehicle-selection')}>
+                            <Text style={styles.continueButtonText}>Continue to Vehicle</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
@@ -196,7 +196,6 @@ const styles = StyleSheet.create({
     stepItem: {
         alignItems: 'center',
         zIndex: 1,
-        flex: 1,
     },
     stepCircle: {
         width: 30,
@@ -219,10 +218,9 @@ const styles = StyleSheet.create({
         color: '#333',
     },
     stepLabel: {
-        fontSize: 10,
+        fontSize: 12,
         color: '#999',
         fontWeight: '500',
-        textAlign: 'center',
     },
     stepLabelActive: {
         color: '#333',
@@ -233,7 +231,7 @@ const styles = StyleSheet.create({
     },
     stepLineContainer: {
         flex: 1,
-        marginHorizontal: 0,
+        marginHorizontal: 4,
         marginTop: 14,
         borderWidth: 1,
         borderColor: '#E0E0E0',

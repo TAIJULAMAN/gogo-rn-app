@@ -28,7 +28,7 @@ export default function SignUpScreen() {
         if (role === 'rider') {
             router.replace('/(rider)');
         } else {
-            router.replace('/(user)/index');
+            router.replace('/(user)/user');
         }
     };
 

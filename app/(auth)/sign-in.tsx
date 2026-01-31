@@ -19,7 +19,7 @@ export default function SignInScreen() {
         setTimeout(async () => {
             await signIn('user');
             setLoading(false);
-            router.replace('/(user)/index');
+            router.replace('/(user)/user');
         }, 1500);
     };
 

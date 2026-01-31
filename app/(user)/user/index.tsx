@@ -59,7 +59,7 @@ export default function HomeScreen() {
                                 ]}
                                 onPress={() => {
                                     setSelectedVehicle(vehicle.id);
-                                    router.push('/(user)/index/create-order');
+                                    router.push('/(user)/user/create-order');
                                 }}
                             >
                                 <View style={[

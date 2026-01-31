@@ -30,7 +30,7 @@ export default function TabLayout() {
         }
       }}>
       <Tabs.Screen
-        name="index"
+        name="user"
         options={{
           title: 'GOGO',
           tabBarIcon: ({ color }) => <FontAwesome5 name="motorcycle" size={24} color={color} />,
