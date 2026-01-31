@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../../../constants/Colors';
 
-const STEPS = ['Locations', 'Vehicle', 'Payment'];
+const STEPS = ['Locations', 'Vehicle', 'Checkout', 'Payment'];
 
 export default function CreateOrderScreen() {
     const router = useRouter();
@@ -78,7 +78,7 @@ export default function CreateOrderScreen() {
                                     onChangeText={setPickup}
                                     placeholderTextColor="#333"
                                 />
-                                <TouchableOpacity style={styles.targetIcon} onPress={() => router.push('/(tabs)/pickup-location')}>
+                                <TouchableOpacity style={styles.targetIcon} onPress={() => router.push('/(user)/index/pickup-location')}>
                                     <MaterialIcons name="my-location" size={20} color="#999" />
                                 </TouchableOpacity>
                             </View>
@@ -94,7 +94,7 @@ export default function CreateOrderScreen() {
                                     onChangeText={setDropoff}
                                     placeholderTextColor="#999"
                                 />
-                                <TouchableOpacity style={styles.targetIcon} onPress={() => router.push('/(tabs)/drop-location')}>
+                                <TouchableOpacity style={styles.targetIcon} onPress={() => router.push('/(user)/index/drop-location')}>
                                     <MaterialIcons name="my-location" size={20} color="#999" />
                                 </TouchableOpacity>
                             </View>

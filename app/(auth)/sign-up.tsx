@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Button } from '../../components/Button';
 import { Colors } from '../../constants/Colors';
+import { useAuth } from '../../context/AuthContext';
 
 type UserRole = 'user' | 'rider';
 
@@ -16,15 +17,19 @@ export default function SignUpScreen() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const { signIn } = useAuth();
+
+    // ...
 
     const handleSignUp = async () => {
         setLoading(true);
-        // Simulate API call with role
-        console.log('Signing up as:', role);
-        setTimeout(() => {
-            setLoading(false);
-            router.replace('/(tabs)');
-        }, 1500);
+        await signIn(role);
+        setLoading(false);
+        if (role === 'rider') {
+            router.replace('/(rider)');
+        } else {
+            router.replace('/(user)/index');
+        }
     };
 
     return (

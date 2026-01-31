@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../../../constants/Colors';
 
-const STEPS = ['Locations', 'Vehicle', 'Payment'];
+const STEPS = ['Locations', 'Vehicle', 'Checkout', 'Payment'];
 
 export default function AddStopsScreen() {
     const router = useRouter();
@@ -142,7 +142,7 @@ export default function AddStopsScreen() {
                         />
                     </View>
 
-                    <TouchableOpacity style={[styles.continueButton, { backgroundColor: '#BEFFB6' }]} onPress={() => router.push('/(tabs)/vehicle-selection')}>
+                    <TouchableOpacity style={[styles.continueButton, { backgroundColor: '#BEFFB6' }]} onPress={() => router.push('/(user)/index/vehicle-selection')}>
                         <Text style={styles.continueButtonText}>Continue to Vehicle</Text>
                     </TouchableOpacity>
 
@@ -191,6 +191,7 @@ const styles = StyleSheet.create({
     stepItem: {
         alignItems: 'center',
         zIndex: 1,
+        flex: 1,
     },
     stepCircle: {
         width: 30,
@@ -213,9 +214,10 @@ const styles = StyleSheet.create({
         color: '#333',
     },
     stepLabel: {
-        fontSize: 12,
+        fontSize: 10,
         color: '#999',
         fontWeight: '500',
+        textAlign: 'center',
     },
     stepLabelActive: {
         color: '#333',
@@ -226,7 +228,7 @@ const styles = StyleSheet.create({
     },
     stepLineContainer: {
         flex: 1,
-        marginHorizontal: 4,
+        marginHorizontal: 0,
         marginTop: 14,
         borderWidth: 1,
         borderColor: '#E0E0E0',

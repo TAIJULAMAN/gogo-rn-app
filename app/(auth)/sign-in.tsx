@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Button } from '../../components/Button';
 import { Colors } from '../../constants/Colors';
+import { useAuth } from '../../context/AuthContext';
 
 export default function SignInScreen() {
     const router = useRouter();
@@ -11,11 +12,14 @@ export default function SignInScreen() {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const { signIn } = useAuth();
+
     const handleSignIn = async () => {
         setLoading(true);
-        setTimeout(() => {
+        setTimeout(async () => {
+            await signIn('user');
             setLoading(false);
-            router.replace('/(tabs)');
+            router.replace('/(user)/index');
         }, 1500);
     };
 

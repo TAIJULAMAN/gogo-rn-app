@@ -1,21 +1,14 @@
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../../../constants/Colors';
 
 const STEPS = ['Locations', 'Vehicle', 'Checkout', 'Payment'];
 
-const PAYMENT_METHODS = [
-    { id: 'wallet', name: 'Wallet', balance: '$240.50', icon: 'wallet-outline', type: 'ionicon' },
-    { id: 'cash', name: 'Cash', balance: null, icon: 'cash-outline', type: 'ionicon' },
-    { id: 'card', name: 'mastercard', balance: '**** 5678', icon: 'payment', type: 'material' },
-];
-
-export default function PaymentScreen() {
+export default function CheckoutScreen() {
     const router = useRouter();
-    const [currentStep, setCurrentStep] = useState(3);
-    const [selectedMethod, setSelectedMethod] = useState('wallet');
+    const [currentStep, setCurrentStep] = useState(2);
 
     const renderStepper = () => (
         <View style={styles.stepperContainer}>
@@ -48,7 +41,7 @@ export default function PaymentScreen() {
                 <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
                     <Ionicons name="arrow-back" size={24} color="#000" />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>PAYMENT</Text>
+                <Text style={styles.headerTitle}>CHECKOUT</Text>
                 <View style={{ width: 24 }} />
             </View>
 
@@ -57,48 +50,33 @@ export default function PaymentScreen() {
 
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
 
-
-
-                    {/* Payment Methods */}
-                    <Text style={styles.sectionTitle}>Payment Method</Text>
-                    <View style={styles.methodsContainer}>
-                        {PAYMENT_METHODS.map((method) => (
-                            <TouchableOpacity
-                                key={method.id}
-                                style={[
-                                    styles.methodCard,
-                                    selectedMethod === method.id && styles.methodCardSelected
-                                ]}
-                                onPress={() => setSelectedMethod(method.id)}
-                            >
-                                <View style={styles.methodIcon}>
-                                    {method.type === 'ionicon' ? (
-                                        <Ionicons name={method.icon as any} size={24} color={Colors.primary} />
-                                    ) : (
-                                        <MaterialIcons name={method.icon as any} size={24} color={Colors.primary} />
-                                    )}
-                                </View>
-                                <View style={styles.methodInfo}>
-                                    <Text style={styles.methodName}>{method.name}</Text>
-                                    {method.balance && <Text style={styles.methodBalance}>{method.balance}</Text>}
-                                </View>
-                                <View style={styles.radioContainer}>
-                                    {selectedMethod === method.id ? (
-                                        <Ionicons name="radio-button-on" size={24} color={Colors.primary} />
-                                    ) : (
-                                        <Ionicons name="radio-button-off" size={24} color="#DDD" />
-                                    )}
-                                </View>
-                            </TouchableOpacity>
-                        ))}
-                    </View>
-
-                    {/* Promo Code */}
-                    <View style={styles.promoContainer}>
-                        <View style={styles.promoIcon}>
-                            <Ionicons name="pricetag-outline" size={20} color="#666" />
+                    {/* Order Summary */}
+                    <Text style={styles.sectionTitle}>Order Summary</Text>
+                    <View style={styles.summaryCard}>
+                        {/* Vehicle Info */}
+                        <View style={styles.vehicleRow}>
+                            <Image source={require('../../../assets/vehicles/car.png')} style={styles.vehicleImage} resizeMode="contain" />
+                            <View style={styles.vehicleInfo}>
+                                <Text style={styles.vehicleName}>Car Delivery</Text>
+                                <Text style={styles.vehicleDetails}>Just 7 mins away</Text>
+                            </View>
+                            <Text style={styles.priceText}>$39.82</Text>
                         </View>
-                        <Text style={styles.promoText}>Add Promo Code</Text>
+
+                        <View style={styles.divider} />
+
+                        {/* Route Info */}
+                        <View style={styles.routeRow}>
+                            <View style={styles.routePoint}>
+                                <View style={[styles.dot, styles.dotGreen]} />
+                                <Text style={styles.routeText} numberOfLines={1}>3401, Escape Tower, Business Bay</Text>
+                            </View>
+                            <View style={styles.routeLine} />
+                            <View style={styles.routePoint}>
+                                <View style={[styles.dot, styles.dotRed]} />
+                                <Text style={styles.routeText} numberOfLines={1}>1609, Elite 8 Sports Residence</Text>
+                            </View>
+                        </View>
                     </View>
 
                     {/* Total */}
@@ -109,9 +87,9 @@ export default function PaymentScreen() {
 
                     <TouchableOpacity
                         style={[styles.payButton, { backgroundColor: '#BEFFB6' }]}
-                        onPress={() => router.push('/(tabs)/payment-success')}
+                        onPress={() => router.push('/(user)/index/payment')}
                     >
-                        <Text style={styles.payButtonText}>Pay Now</Text>
+                        <Text style={styles.payButtonText}>Continue to Payment</Text>
                     </TouchableOpacity>
 
                 </ScrollView>
@@ -281,69 +259,6 @@ const styles = StyleSheet.create({
         height: 10,
         backgroundColor: '#DDD',
         marginLeft: 3.5,
-    },
-
-    // Payment Methods
-    methodsContainer: {
-        gap: 12,
-        marginBottom: 24,
-    },
-    methodCard: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 16,
-        borderRadius: 16,
-        borderWidth: 1,
-        borderColor: '#E0E0E0',
-        backgroundColor: '#fff',
-    },
-    methodCardSelected: {
-        borderColor: Colors.primary,
-        backgroundColor: '#F0FFF4',
-    },
-    methodIcon: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        backgroundColor: '#F5F5F5',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginRight: 12,
-    },
-    methodInfo: {
-        flex: 1,
-    },
-    methodName: {
-        fontSize: 14,
-        fontWeight: '700',
-        color: '#333',
-    },
-    methodBalance: {
-        fontSize: 12,
-        color: '#666',
-    },
-    radioContainer: {
-        marginLeft: 8,
-    },
-
-    // Promo
-    promoContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 16,
-        borderRadius: 16,
-        borderWidth: 1,
-        borderColor: '#E0E0E0',
-        borderStyle: 'dashed',
-        marginBottom: 24,
-    },
-    promoIcon: {
-        marginRight: 12,
-    },
-    promoText: {
-        fontSize: 14,
-        color: '#666',
-        fontWeight: '500',
     },
 
     // Total

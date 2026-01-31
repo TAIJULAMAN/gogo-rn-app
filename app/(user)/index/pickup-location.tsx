@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../../../constants/Colors';
 
-const STEPS = ['Locations', 'Vehicle', 'Payment'];
+const STEPS = ['Locations', 'Vehicle', 'Checkout', 'Payment'];
 
-export default function DropLocationScreen() {
+export default function PickupLocationScreen() {
     const router = useRouter();
     const [currentStep, setCurrentStep] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
@@ -55,14 +55,14 @@ export default function DropLocationScreen() {
             <View style={styles.card}>
                 {renderStepper()}
 
-                {/* Drop Location Title Section */}
+                {/* Pickup Location Title Section */}
                 <View style={styles.titleSection}>
                     <View style={styles.locationIconContainer}>
-                        <MaterialIcons name="location-on" size={24} color="#F44336" />
+                        <MaterialIcons name="location-on" size={24} color="#4CAF50" />
                     </View>
                     <View>
-                        <Text style={styles.pageTitle}>Drop location</Text>
-                        <Text style={styles.pageSubtitle}>Choose where to drop off</Text>
+                        <Text style={styles.pageTitle}>Pickup location</Text>
+                        <Text style={styles.pageSubtitle}>Choose where to Pickup</Text>
                     </View>
                 </View>
 
@@ -147,8 +147,8 @@ export default function DropLocationScreen() {
                             />
                         </View>
 
-                        <TouchableOpacity style={[styles.continueButton, { backgroundColor: '#BEFFB6' }]} onPress={() => router.push('/(tabs)/vehicle-selection')}>
-                            <Text style={styles.continueButtonText}>Continue to Vehicle</Text>
+                        <TouchableOpacity style={styles.continueButton} onPress={() => router.push('/(user)/index/drop-location')}>
+                            <Text style={styles.continueButtonText}>Continue to Drop Location</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
     stepItem: {
         alignItems: 'center',
         zIndex: 1,
+        flex: 1,
     },
     stepCircle: {
         width: 30,
@@ -218,9 +219,10 @@ const styles = StyleSheet.create({
         color: '#333',
     },
     stepLabel: {
-        fontSize: 12,
+        fontSize: 10,
         color: '#999',
         fontWeight: '500',
+        textAlign: 'center',
     },
     stepLabelActive: {
         color: '#333',
@@ -231,7 +233,7 @@ const styles = StyleSheet.create({
     },
     stepLineContainer: {
         flex: 1,
-        marginHorizontal: 4,
+        marginHorizontal: 0,
         marginTop: 14,
         borderWidth: 1,
         borderColor: '#E0E0E0',

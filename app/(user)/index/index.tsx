@@ -59,8 +59,7 @@ export default function HomeScreen() {
                                 ]}
                                 onPress={() => {
                                     setSelectedVehicle(vehicle.id);
-                                    // Navigate to sibling in the stack
-                                    router.push('/(tabs)/create-order');
+                                    router.push('/(user)/index/create-order');
                                 }}
                             >
                                 <View style={[

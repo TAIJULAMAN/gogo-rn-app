@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../../../constants/Colors';
 
-const STEPS = ['Locations', 'Vehicle', 'Payment'];
+const STEPS = ['Locations', 'Vehicle', 'Checkout', 'Payment'];
 
-export default function PickupLocationScreen() {
+export default function DropLocationScreen() {
     const router = useRouter();
     const [currentStep, setCurrentStep] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
@@ -55,14 +55,14 @@ export default function PickupLocationScreen() {
             <View style={styles.card}>
                 {renderStepper()}
 
-                {/* Pickup Location Title Section */}
+                {/* Drop Location Title Section */}
                 <View style={styles.titleSection}>
                     <View style={styles.locationIconContainer}>
-                        <MaterialIcons name="location-on" size={24} color="#4CAF50" />
+                        <MaterialIcons name="location-on" size={24} color="#F44336" />
                     </View>
                     <View>
-                        <Text style={styles.pageTitle}>Pickup location</Text>
-                        <Text style={styles.pageSubtitle}>Choose where to Pickup</Text>
+                        <Text style={styles.pageTitle}>Drop location</Text>
+                        <Text style={styles.pageSubtitle}>Choose where to drop off</Text>
                     </View>
                 </View>
 
@@ -147,8 +147,8 @@ export default function PickupLocationScreen() {
                             />
                         </View>
 
-                        <TouchableOpacity style={styles.continueButton} onPress={() => router.push('/(tabs)/drop-location')}>
-                            <Text style={styles.continueButtonText}>Continue to Drop Location</Text>
+                        <TouchableOpacity style={[styles.continueButton, { backgroundColor: '#BEFFB6' }]} onPress={() => router.push('/(user)/index/vehicle-selection')}>
+                            <Text style={styles.continueButtonText}>Continue to Vehicle</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
