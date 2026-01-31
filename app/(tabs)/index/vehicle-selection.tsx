@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../../../constants/Colors';
 
-const STEPS = ['Locations', 'Vehicle', 'Payment'];
+const STEPS = ['Locations', 'Vehicle', 'Checkout', 'Payment'];
 
 const VEHICLES = [
     {
@@ -122,12 +122,12 @@ export default function VehicleSelectionScreen() {
 
 
                         <View style={styles.journeyActions}>
-                            <TouchableOpacity style={styles.actionButton}>
+                            <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/(tabs)/add-stops')}>
                                 <Ionicons name="add-circle-outline" size={18} color="#333" />
                                 <Text style={styles.actionButtonText}>Add Stop</Text>
                             </TouchableOpacity>
                             <View style={styles.actionDivider} />
-                            <TouchableOpacity style={styles.actionButton}>
+                            <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/(tabs)/add-stops')}>
                                 <MaterialIcons name="edit" size={18} color="#333" />
                                 <Text style={styles.actionButtonText}>Edit Location</Text>
                             </TouchableOpacity>
@@ -169,8 +169,8 @@ export default function VehicleSelectionScreen() {
                         ))}
                     </View>
 
-                    <TouchableOpacity style={[styles.continueButton, { backgroundColor: '#BEFFB6' }]}>
-                        <Text style={styles.continueButtonText}>Continue to Payment</Text>
+                    <TouchableOpacity style={[styles.continueButton, { backgroundColor: '#BEFFB6' }]} onPress={() => router.push('/(tabs)/checkout')}>
+                        <Text style={styles.continueButtonText}>Proceed to Checkout</Text>
                     </TouchableOpacity>
 
                 </ScrollView>
@@ -218,6 +218,7 @@ const styles = StyleSheet.create({
     stepItem: {
         alignItems: 'center',
         zIndex: 1,
+        flex: 1,
     },
     stepCircle: {
         width: 30,
@@ -240,9 +241,10 @@ const styles = StyleSheet.create({
         color: '#333',
     },
     stepLabel: {
-        fontSize: 12,
+        fontSize: 10,
         color: '#999',
         fontWeight: '500',
+        textAlign: 'center',
     },
     stepLabelActive: {
         color: '#333',
@@ -253,7 +255,7 @@ const styles = StyleSheet.create({
     },
     stepLineContainer: {
         flex: 1,
-        marginHorizontal: 4,
+        marginHorizontal: 0,
         marginTop: 14,
         borderWidth: 1,
         borderColor: '#E0E0E0',
