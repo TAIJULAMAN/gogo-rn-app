@@ -1,16 +1,18 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import InvoiceModal from '../../../components/InvoiceModal';
 import { DropoffIcon, PickupIcon } from '../../../components/LocationIcons';
 import { Colors } from '../../../constants/Colors';
 
 export default function OrderDetailsScreen() {
     const router = useRouter();
     const { id } = useLocalSearchParams();
+    const [showInvoice, setShowInvoice] = useState(false);
 
-    // Mock data - in real app, fetch based on id
+    // Mock data
     const order = {
         id: id || '1',
         orderId: '#ORD-2023-1001',
@@ -146,46 +148,6 @@ export default function OrderDetailsScreen() {
                     </View>
                 </Animated.View>
 
-                {/* Timeline */}
-                <Animated.View
-                    entering={FadeInDown.delay(500).duration(600)}
-                    style={styles.card}
-                >
-                    <Text style={styles.cardTitle}>Order Timeline</Text>
-
-                    <View style={styles.timeline}>
-                        {order.timeline.map((item, index) => (
-                            <View key={index} style={styles.timelineItem}>
-                                <View style={styles.timelineLeft}>
-                                    <View style={[
-                                        styles.timelineDot,
-                                        item.completed && styles.timelineDotCompleted
-                                    ]}>
-                                        {item.completed && (
-                                            <Ionicons name="checkmark" size={12} color="#fff" />
-                                        )}
-                                    </View>
-                                    {index < order.timeline.length - 1 && (
-                                        <View style={[
-                                            styles.timelineLine,
-                                            item.completed && styles.timelineLineCompleted
-                                        ]} />
-                                    )}
-                                </View>
-                                <View style={styles.timelineContent}>
-                                    <Text style={[
-                                        styles.timelineStatus,
-                                        item.completed && styles.timelineStatusCompleted
-                                    ]}>
-                                        {item.status}
-                                    </Text>
-                                    <Text style={styles.timelineTime}>{item.time}</Text>
-                                </View>
-                            </View>
-                        ))}
-                    </View>
-                </Animated.View>
-
                 {/* Price Breakdown */}
                 <Animated.View
                     entering={FadeInDown.delay(600).duration(600)}
@@ -213,19 +175,21 @@ export default function OrderDetailsScreen() {
                     entering={FadeInDown.delay(700).duration(600)}
                     style={styles.actionsContainer}
                 >
-                    <TouchableOpacity style={styles.actionButton}>
+                    <TouchableOpacity
+                        style={styles.actionButton}
+                        onPress={() => setShowInvoice(true)}
+                    >
                         <Ionicons name="receipt-outline" size={20} color={Colors.text} />
                         <Text style={styles.actionButtonText}>Download Receipt</Text>
                     </TouchableOpacity>
-
-                    <TouchableOpacity style={[styles.actionButton, styles.actionButtonPrimary]}>
-                        <Ionicons name="refresh-outline" size={20} color="#000" />
-                        <Text style={[styles.actionButtonText, { color: '#000' }]}>
-                            Reorder
-                        </Text>
-                    </TouchableOpacity>
                 </Animated.View>
             </ScrollView>
+
+            <InvoiceModal
+                visible={showInvoice}
+                onClose={() => setShowInvoice(false)}
+                order={order}
+            />
         </View>
     );
 }
