@@ -1,8 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import CancelOrderModal from '../../../components/CancelOrderModal';
 import InvoiceModal from '../../../components/InvoiceModal';
 import { DropoffIcon, PickupIcon } from '../../../components/LocationIcons';
 import { Colors } from '../../../constants/Colors';
@@ -11,12 +12,13 @@ export default function OrderDetailsScreen() {
     const router = useRouter();
     const { id } = useLocalSearchParams();
     const [showInvoice, setShowInvoice] = useState(false);
+    const [showCancelModal, setShowCancelModal] = useState(false);
 
-    // Mock data
-    const order = {
+    // Mock data initial state
+    const [order, setOrder] = useState({
         id: id || '1',
         orderId: '#ORD-2023-1001',
-        status: 'Delivered',
+        status: 'Order Placed',
         date: 'Oct 24, 2023',
         time: '10:30 AM',
         from: 'Dubai Mall, Downtown Dubai',
@@ -33,15 +35,28 @@ export default function OrderDetailsScreen() {
         timeline: [
             { status: 'Order Placed', time: '10:00 AM', completed: true },
             { status: 'Driver Assigned', time: '10:05 AM', completed: true },
-            { status: 'Picked Up', time: '10:15 AM', completed: true },
-            { status: 'In Transit', time: '10:20 AM', completed: true },
-            { status: 'Delivered', time: '10:30 AM', completed: true },
+            { status: 'Picked Up', time: '', completed: false },
+            { status: 'In Transit', time: '', completed: false },
+            { status: 'Delivered', time: '', completed: false },
         ],
         breakdown: [
             { label: 'Delivery Fee', amount: 'AED 30.00' },
             { label: 'Service Fee', amount: 'AED 3.50' },
             { label: 'Tax', amount: 'AED 1.50' },
         ],
+    });
+
+    const handleCancelOrder = () => {
+        setShowCancelModal(true);
+    };
+
+    const confirmCancel = (reason: string) => {
+        console.log("Cancelled due to:", reason);
+        setOrder(prev => ({ ...prev, status: 'Cancelled' }));
+        setShowCancelModal(false);
+        setTimeout(() => {
+            Alert.alert("Order Cancelled", "Your order has been cancelled successfully.");
+        }, 500);
     };
 
     const getStatusConfig = (status: string) => {
@@ -52,8 +67,11 @@ export default function OrderDetailsScreen() {
                 return { bg: '#E3F2FD', text: '#1565C0', icon: 'bicycle' as const };
             case 'Cancelled':
                 return { bg: '#FFEBEE', text: '#C62828', icon: 'close-circle' as const };
+            case 'Order Placed':
+            case 'Driver Assigned':
+                return { bg: '#FFF3E0', text: '#EF6C00', icon: 'time' as const };
             default:
-                return { bg: '#F5F5F5', text: '#616161', icon: 'time' as const };
+                return { bg: '#F5F5F5', text: '#616161', icon: 'help-circle' as const };
         }
     };
 
@@ -192,6 +210,16 @@ export default function OrderDetailsScreen() {
                             <Text style={styles.actionButtonText}>Rate Driver</Text>
                         </TouchableOpacity>
                     )}
+
+                    {['Order Placed', 'Driver Assigned'].includes(order.status) && (
+                        <TouchableOpacity
+                            style={[styles.actionButton, { borderColor: '#FF5252' }]}
+                            onPress={handleCancelOrder}
+                        >
+                            <Ionicons name="close-circle-outline" size={20} color="#FF5252" />
+                            <Text style={[styles.actionButtonText, { color: '#FF5252' }]}>Cancel Order</Text>
+                        </TouchableOpacity>
+                    )}
                 </Animated.View>
             </ScrollView>
 
@@ -199,6 +227,12 @@ export default function OrderDetailsScreen() {
                 visible={showInvoice}
                 onClose={() => setShowInvoice(false)}
                 order={order}
+            />
+
+            <CancelOrderModal
+                visible={showCancelModal}
+                onClose={() => setShowCancelModal(false)}
+                onConfirm={confirmCancel}
             />
         </View>
     );
