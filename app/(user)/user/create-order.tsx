@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInDown, FadeInUp, Layout, SlideInRight } from 'react-native-reanimated';
 import { Colors } from '../../../constants/Colors';
 
@@ -83,8 +83,11 @@ export default function CreateOrderScreen() {
                                 <View style={styles.locationInputCard}>
                                     <View style={styles.locationIconWrapper}>
                                         <View style={styles.pickupIconContainer}>
-                                            <View style={styles.pickupDot} />
-                                            <View style={styles.pickupRing} />
+                                            <Image
+                                                source={require('../../../assets/pick.png')}
+                                                style={styles.locationIconImage}
+                                                resizeMode="contain"
+                                            />
                                         </View>
                                     </View>
                                     <View style={styles.inputContent}>
@@ -118,10 +121,11 @@ export default function CreateOrderScreen() {
                                 <View style={styles.locationInputCard}>
                                     <View style={styles.locationIconWrapper}>
                                         <View style={styles.dropoffIconContainer}>
-                                            <View style={styles.dropoffPin}>
-                                                <View style={styles.dropoffDot} />
-                                            </View>
-                                            <View style={styles.dropoffTail} />
+                                            <Image
+                                                source={require('../../../assets/drop.png')}
+                                                style={styles.locationIconImage}
+                                                resizeMode="contain"
+                                            />
                                         </View>
                                     </View>
                                     <View style={styles.inputContent}>
@@ -225,7 +229,7 @@ export default function CreateOrderScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.primary, // Using primary for the top background
+        backgroundColor: Colors.primary,
     },
     header: {
         flexDirection: 'row',
@@ -354,56 +358,19 @@ const styles = StyleSheet.create({
         height: 32,
         alignItems: 'center',
         justifyContent: 'center',
-        position: 'relative',
-    },
-    pickupDot: {
-        width: 12,
-        height: 12,
-        borderRadius: 6,
-        backgroundColor: Colors.primaryDark,
-        position: 'absolute',
-        zIndex: 2,
-    },
-    pickupRing: {
-        width: 24,
-        height: 24,
-        borderRadius: 12,
-        borderWidth: 2,
-        borderColor: Colors.primaryDark,
-        position: 'absolute',
-        zIndex: 1,
     },
 
     // Dropoff Icon Styles
     dropoffIconContainer: {
         width: 32,
-        height: 38,
-        alignItems: 'center',
-        position: 'relative',
-    },
-    dropoffPin: {
-        width: 24,
-        height: 24,
-        borderRadius: 12,
-        backgroundColor: '#F44336',
+        height: 32,
         alignItems: 'center',
         justifyContent: 'center',
     },
-    dropoffDot: {
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        backgroundColor: '#fff',
-    },
-    dropoffTail: {
-        width: 4,
-        height: 12,
-        backgroundColor: '#F44336',
-        position: 'absolute',
-        bottom: 0,
-        left: 10,
-        borderBottomLeftRadius: 2,
-        borderBottomRightRadius: 2,
+
+    locationIconImage: {
+        width: '100%',
+        height: '100%',
     },
 
     // Input Content Styles

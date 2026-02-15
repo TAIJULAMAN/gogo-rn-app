@@ -70,9 +70,11 @@ export default function AddStopsScreen() {
                         <View style={styles.journeyContent}>
                             {/* Pickup Location */}
                             <View style={styles.locationRow}>
-                                <View style={[styles.timelineDot, styles.dotGreen]}>
-                                    <Text style={styles.dotText}>A</Text>
-                                </View>
+                                <Image
+                                    source={require('../../../assets/pick.png')}
+                                    style={{ width: 24, height: 24, marginRight: 12 }}
+                                    resizeMode="contain"
+                                />
                                 <View style={styles.locationInfo}>
                                     <Text style={styles.locationPerson}>Roshan Hegde • +971552239345</Text>
                                     <Text style={styles.locationAddress} numberOfLines={1}>3401, Escape Tower, Business Bay, Dubai.</Text>

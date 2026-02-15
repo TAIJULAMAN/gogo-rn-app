@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { Image, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInDown, FadeInUp, Layout } from 'react-native-reanimated';
 import { CustomInput } from '../../../components/CustomInput';
-import { PickupIcon } from '../../../components/LocationIcons';
 import { Colors } from '../../../constants/Colors';
 
 const STEPS = ['Locations', 'Vehicle', 'Checkout', 'Payment'];
@@ -92,7 +91,11 @@ export default function PickupLocationScreen() {
                     style={styles.titleSection}
                 >
                     <View style={styles.locationIconContainer}>
-                        <PickupIcon size={32} />
+                        <Image
+                            source={require('../../../assets/pick.png')}
+                            style={{ width: 40, height: 40 }}
+                            resizeMode="contain"
+                        />
                     </View>
                     <View>
                         <Text style={styles.pageTitle}>Pickup Location</Text>
@@ -167,7 +170,11 @@ export default function PickupLocationScreen() {
                             resizeMode="cover"
                         />
                         <View style={styles.mapOverlay}>
-                            <PickupIcon size={40} />
+                            <Image
+                                source={require('../../../assets/pick.png')}
+                                style={{ width: 40, height: 40 }}
+                                resizeMode="contain"
+                            />
                         </View>
                     </Animated.View>
 
@@ -228,6 +235,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingTop: 60,
         paddingBottom: 20,
+    },
+    locationIconImage: {
+        width: '100%',
+        height: '100%',
     },
     backButton: {
         padding: 8,

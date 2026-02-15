@@ -14,7 +14,7 @@ const VEHICLES = [
         weight: '20Kg',
         time: 'Just 8 mins away',
         price: '32.90',
-        image: require('../../../assets/vehicles/bike.png'),
+        image: require('../../../assets/vehicles/moto.png'),
         colors: ['#00E5FF', '#2979FF'] as const,
         icon: 'bicycle'
     },
@@ -94,13 +94,9 @@ export default function VehicleSelectionScreen() {
 
                         <View style={styles.journeyContent}>
                             <View style={styles.timelineContainer}>
-                                <View style={[styles.timelineDot, styles.dotGreen]}>
-                                    <Text style={styles.dotText}>A</Text>
-                                </View>
+                                <Image source={require('../../../assets/pick.png')} style={{ width: 20, height: 20 }} resizeMode="contain" />
                                 <View style={styles.timelineLine} />
-                                <View style={[styles.timelineDot, styles.dotRed]}>
-                                    <Text style={styles.dotText}>B</Text>
-                                </View>
+                                <Image source={require('../../../assets/drop.png')} style={{ width: 20, height: 20 }} resizeMode="contain" />
                             </View>
 
                             <View style={styles.locationsWrapper}>
