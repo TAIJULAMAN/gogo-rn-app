@@ -1,4 +1,4 @@
-import { FontAwesome5, Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Image, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -6,9 +6,9 @@ import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { Colors } from '../../../constants/Colors';
 
 const VEHICLES = [
-    { id: 'bike', name: 'Bike Delivery', icon: 'motorcycle' },
-    { id: 'car', name: 'Car Delivery', icon: 'car-side' },
-    { id: 'truck', name: 'Truck Delivery', icon: 'truck' },
+    { id: 'bike', name: 'Bike Delivery', image: require('../../../assets/vehicles/moto.png') },
+    { id: 'car', name: 'Car Delivery', image: require('../../../assets/vehicles/car.png') },
+    { id: 'truck', name: 'Truck Delivery', image: require('../../../assets/vehicles/truck.png') },
 ];
 
 const FEATURES = [
@@ -22,9 +22,7 @@ const FEATURES = [
 const FeatureItem = ({ text, index }: { text: string, index: number }) => (
     <Animated.View
         entering={FadeInDown.delay(600 + (index * 100)).duration(600)}
-        style={styles.featureItem}
     >
-        <Ionicons name="checkmark-circle" size={20} color={Colors.primaryDark} />
         <Text style={styles.featureText}>{text}</Text>
     </Animated.View>
 );
@@ -90,10 +88,10 @@ export default function HomeScreen() {
                                         styles.vehicleIconContainer,
                                         selectedVehicle === vehicle.id && styles.vehicleIconContainerActive
                                     ]}>
-                                        <FontAwesome5
-                                            name={vehicle.icon as any}
-                                            size={28}
-                                            color={selectedVehicle === vehicle.id ? Colors.text : '#999'}
+                                        <Image
+                                            source={vehicle.image}
+                                            style={styles.vehicleImage}
+                                            resizeMode="contain"
                                         />
                                     </View>
                                     <Text style={[
@@ -118,7 +116,6 @@ export default function HomeScreen() {
 
                     {/* Features List */}
                     <View style={styles.featuresContainer}>
-                        <Text style={styles.featuresTitle}>Why choose us?</Text>
                         {FEATURES.map((feature, index) => (
                             <FeatureItem key={index} text={feature} index={index} />
                         ))}
@@ -253,9 +250,9 @@ const styles = StyleSheet.create({
         transform: [{ scale: 1.05 }], // Simple scale via style, ideally animated
     },
     vehicleIconContainer: {
-        width: 56,
-        height: 56,
-        borderRadius: 28,
+        width: 80,
+        height: 80,
+        borderRadius: 40,
         backgroundColor: '#F5F5F5',
         alignItems: 'center',
         justifyContent: 'center',
@@ -301,26 +298,14 @@ const styles = StyleSheet.create({
     },
     featuresContainer: {
         marginBottom: 32,
-    },
-    featuresTitle: {
-        fontSize: 18,
-        fontWeight: '700',
-        color: Colors.text,
-        marginBottom: 16,
-    },
-    featureItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 12,
-        marginBottom: 12,
-        backgroundColor: '#F9F9F9',
-        padding: 12,
-        borderRadius: 12,
+        paddingHorizontal: 12,
     },
     featureText: {
-        fontSize: 16,
-        color: '#444',
-        fontWeight: '500',
+        fontSize: 28,
+        color: '#1A1A1A',
+        fontWeight: '800',
+        marginBottom: 4,
+        lineHeight: 36,
     },
     skylineContainer: {
         alignItems: 'center',
@@ -332,5 +317,9 @@ const styles = StyleSheet.create({
         height: 180,
         resizeMode: 'contain',
         opacity: 0.8,
+    },
+    vehicleImage: {
+        width: 60,
+        height: 60,
     },
 });

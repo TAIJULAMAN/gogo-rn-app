@@ -4,7 +4,6 @@ import { KeyboardAvoidingView, Platform, ScrollView, StatusBar, StyleSheet, Text
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { Button } from '../../components/Button';
 import { Colors } from '../../constants/Colors';
-import { useAuth } from '../../context/AuthContext';
 
 export default function SignUpScreen() {
     const router = useRouter();
@@ -13,18 +12,7 @@ export default function SignUpScreen() {
     const [address, setAddress] = useState('');
     const [company, setCompany] = useState('');
     const [loading, setLoading] = useState(false);
-
-    // Focus states
     const [focusedInput, setFocusedInput] = useState<string | null>(null);
-
-    const handleSignUp = async () => {
-        setLoading(true);
-        // Simulate API call
-        setTimeout(() => {
-            setLoading(false);
-            router.replace('/(user)/user');
-        }, 1500);
-    };
 
     const InputField = ({ label, value, onChangeText, placeholder, secureTextEntry = false, keyboardType = 'default', id, optional = false }: any) => (
         <View style={styles.inputContainer}>
