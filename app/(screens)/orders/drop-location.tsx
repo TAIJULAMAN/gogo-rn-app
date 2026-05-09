@@ -150,7 +150,7 @@ export default function DropoffLocationScreen() {
             phone,
             coordinate: selectedCoordinate,
         }));
-        router.push('/(tab)/orders/add-stops');
+        router.push('/orders/add-stops');
     };
 
     const renderStepper = () => (

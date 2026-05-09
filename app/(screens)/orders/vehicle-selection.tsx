@@ -2,7 +2,7 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import { setSelectedVehicle, swapPickupAndDropoff } from '../../../Redux/Slice/orderDraftSlice';
 import { Colors } from '../../../constants/Colors';
@@ -46,7 +46,34 @@ export default function VehicleSelectionScreen() {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const currentStep = 1;
-    const { pickup, dropoff, stops, selectedVehicleId } = useAppSelector((state) => state.orderDraft);
+    const {
+        pickup,
+        dropoff,
+        stops,
+        selectedVehicleId,
+        routeDistanceKm,
+        routeDurationMin,
+    } = useAppSelector((state) => state.orderDraft);
+    const missingCheckoutFields = [
+        !pickup?.coordinate ? 'pickup location' : null,
+        !dropoff?.coordinate ? 'dropoff location' : null,
+        !selectedVehicleId ? 'vehicle' : null,
+        routeDistanceKm == null ? 'route distance' : null,
+        routeDurationMin == null ? 'route duration' : null,
+    ].filter(Boolean) as string[];
+    const canProceedToCheckout = missingCheckoutFields.length === 0;
+
+    const handleProceedToCheckout = () => {
+        if (!canProceedToCheckout) {
+            Alert.alert(
+                'Complete order details',
+                `Please complete ${missingCheckoutFields.join(', ')} before checkout.`
+            );
+            return;
+        }
+
+        router.push('/orders/checkout');
+    };
 
     const getContactLine = (location: typeof pickup) => {
         const name = location?.personName?.trim() || 'Contact person';
@@ -149,12 +176,12 @@ export default function VehicleSelectionScreen() {
 
 
                         <View style={styles.journeyActions}>
-                            <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/(tab)/orders/add-stops')}>
+                            <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/orders/add-stops')}>
                                 <Ionicons name="add-circle-outline" size={18} color="#333" />
                                 <Text style={styles.actionButtonText}>Add Stop</Text>
                             </TouchableOpacity>
                             <View style={styles.actionDivider} />
-                            <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/(tab)/orders/add-stops')}>
+                            <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/orders/add-stops')}>
                                 <MaterialIcons name="edit" size={18} color="#333" />
                                 <Text style={styles.actionButtonText}>Edit Location</Text>
                             </TouchableOpacity>
@@ -196,7 +223,13 @@ export default function VehicleSelectionScreen() {
                         ))}
                     </View>
 
-                    <TouchableOpacity style={[styles.continueButton, { backgroundColor: '#BEFFB6' }]} onPress={() => router.push('/(tab)/orders/checkout')}>
+                    <TouchableOpacity
+                        style={[
+                            styles.continueButton,
+                            { backgroundColor: canProceedToCheckout ? '#BEFFB6' : '#F0F0F0' },
+                        ]}
+                        onPress={handleProceedToCheckout}
+                    >
                         <Text style={styles.continueButtonText}>Proceed to Checkout</Text>
                     </TouchableOpacity>
 

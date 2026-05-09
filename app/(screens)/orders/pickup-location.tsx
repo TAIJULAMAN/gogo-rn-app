@@ -176,7 +176,7 @@ export default function PickupLocationScreen() {
         coordinate: selectedCoordinate,
       }),
     );
-    router.push("/(tab)/orders/drop-location");
+    router.push("/orders/drop-location");
   };
 
   const renderStepper = () => (

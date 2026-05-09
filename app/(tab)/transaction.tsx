@@ -1,5 +1,4 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Stack } from "expo-router";
 import {
   ActivityIndicator,
   RefreshControl,
@@ -11,10 +10,10 @@ import {
   View,
 } from "react-native";
 import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
-import { useGetPaymentHistoryQuery } from "../../../Redux/api/paymentApi";
-import { Colors } from "../../../constants/Colors";
+import { useGetPaymentHistoryQuery } from "../../Redux/api/paymentApi";
+import { Colors } from "../../constants/Colors";
 import { useState } from "react";
-import { getPaymentArray, toTransactionItem } from "./paymentFormatters";
+import { getPaymentArray, toTransactionItem } from "../../utils/paymentFormatters";
 
 const FILTERS = ["All", "Payments", "Refunds"];
 
@@ -35,7 +34,6 @@ export default function TransactionScreen() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ headerShown: false }} />
       <StatusBar barStyle="dark-content" />
 
       <View style={styles.header}>

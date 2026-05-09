@@ -1,29 +1,47 @@
 
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { Colors } from '../../../constants/Colors';
+import { useAddReviewMutation } from '../../../Redux/api/orderApi';
 
 export default function RateDriverScreen() {
     const router = useRouter();
+    const { orderId, driverName } = useLocalSearchParams<{ orderId: string; driverName: string }>();
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
+    const [addReview, { isLoading }] = useAddReviewMutation();
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (rating === 0) {
             Alert.alert("Error", "Please select a star rating");
             return;
         }
 
-        Alert.alert(
-            "Thank You!",
-            "Your feedback helps us improve our service.",
-            [
-                { text: "OK", onPress: () => router.back() }
-            ]
-        );
+        if (!orderId) {
+            Alert.alert("Error", "Missing order ID");
+            return;
+        }
+
+        try {
+            await addReview({
+                orderId,
+                rating,
+                comment: comment.trim() || undefined,
+            }).unwrap();
+
+            Alert.alert(
+                "Thank You!",
+                "Your feedback helps us improve our service.",
+                [
+                    { text: "OK", onPress: () => router.back() }
+                ]
+            );
+        } catch (error: any) {
+            Alert.alert("Error", error?.data?.message || "Failed to submit review");
+        }
     };
 
     return (
@@ -47,7 +65,7 @@ export default function RateDriverScreen() {
                     <View style={styles.avatarContainer}>
                         <Ionicons name="person" size={40} color={Colors.primaryDark} />
                     </View>
-                    <Text style={styles.driverName}>Ahmed Hassan</Text>
+                    <Text style={styles.driverName}>{driverName || "Driver"}</Text>
                     <Text style={styles.driverRole}>Delivery Partner</Text>
                 </Animated.View>
 
@@ -86,8 +104,16 @@ export default function RateDriverScreen() {
             </ScrollView>
 
             <Animated.View entering={FadeInUp.delay(500).duration(600)} style={styles.footer}>
-                <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-                    <Text style={styles.submitText}>Submit Review</Text>
+                <TouchableOpacity 
+                    style={[styles.submitButton, (isLoading || rating === 0) && styles.disabledButton]} 
+                    onPress={handleSubmit}
+                    disabled={isLoading || rating === 0}
+                >
+                    {isLoading ? (
+                        <ActivityIndicator color="#000" />
+                    ) : (
+                        <Text style={styles.submitText}>Submit Review</Text>
+                    )}
                 </TouchableOpacity>
             </Animated.View>
         </View>
@@ -196,5 +222,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '800',
         color: '#000',
+    },
+    disabledButton: {
+        opacity: 0.5,
     }
 });

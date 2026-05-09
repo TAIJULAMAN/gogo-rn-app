@@ -1,11 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { ActivityIndicator, RefreshControl, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-import { useGetOrdersQuery } from '../../../Redux/api/orderApi';
-import { DropoffIcon, PickupIcon } from '../../../components/LocationIcons';
-import { Colors } from '../../../constants/Colors';
-import { getOrderArray, getOrderTotal, toOrderItem } from './orderFormatters';
+import { useGetOrdersQuery } from '../../Redux/api/orderApi';
+import { DropoffIcon, PickupIcon } from '../../components/LocationIcons';
+import { Colors } from '../../constants/Colors';
+import { getOrderArray, getOrderTotal, toOrderItem } from '../../utils/orderFormatters';
 
 const getStatusConfig = (status: string) => {
     switch (status) {
@@ -42,6 +42,8 @@ export default function OrdersScreen() {
         page: 1,
         limit: 20,
     });
+    console.log(data, "DATA");
+
     const orders = getOrderArray(data).map(toOrderItem);
     const totalOrders = getOrderTotal(data);
 
@@ -55,7 +57,14 @@ export default function OrdersScreen() {
             >
                 <TouchableOpacity
                     style={styles.orderCard}
-                    onPress={() => router.push(`/(tab)/orders/order-details?id=${item.id}`)}
+                    onPress={() => {
+                        const activeStatuses = ['Pending', 'Accepted', 'ArrivedPickup', 'InProgress'];
+                        if (activeStatuses.includes(item.status)) {
+                            router.push(`/orders/running-order?id=${item.id}`);
+                        } else {
+                            router.push(`/orders/order-details?id=${item.id}`);
+                        }
+                    }}
                     activeOpacity={0.7}
                 >
                     {/* Header */}
@@ -117,7 +126,6 @@ export default function OrdersScreen() {
 
     return (
         <View style={styles.container}>
-            <Stack.Screen options={{ headerShown: false }} />
             <StatusBar barStyle="dark-content" />
 
             <View style={styles.header}>

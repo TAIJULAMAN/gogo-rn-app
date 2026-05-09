@@ -26,8 +26,15 @@ export default function OrderDetailsScreen() {
     };
 
     const confirmCancel = async (reason: string) => {
+        const orderId = Array.isArray(id) ? id[0] : id;
+
+        if (!orderId) {
+            Alert.alert("Error", "Missing order id.");
+            return;
+        }
+
         try {
-            await cancelOrder({ id: id as string, reason }).unwrap();
+            await cancelOrder({ id: orderId, reason }).unwrap();
             setShowCancelModal(false);
             Alert.alert("Order Cancelled", "Your order has been cancelled successfully.");
             refetch();
@@ -233,7 +240,13 @@ export default function OrderDetailsScreen() {
                     {order.status === 'Completed' && (
                         <TouchableOpacity
                             style={[styles.actionButton, styles.actionButtonPrimary]}
-                            onPress={() => router.push('/(tab)/orders/rate-driver')}
+                            onPress={() => router.push({
+                                pathname: '/orders/rate-driver',
+                                params: { 
+                                    orderId: order._id || order.id, 
+                                    driverName: order.rider?.name || order.driver?.name || 'Driver' 
+                                }
+                            })}
                         >
                             <Ionicons name="star-outline" size={20} color={Colors.text} />
                             <Text style={styles.actionButtonText}>Rate Driver</Text>

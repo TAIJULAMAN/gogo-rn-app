@@ -31,10 +31,10 @@ type OrderDraftState = {
 const initialState: OrderDraftState = {
   pickup: null,
   dropoff: null,
-  stops: [],
   selectedVehicleId: null,
   routeDistanceKm: null,
   routeDurationMin: null,
+  stops: [],
 };
 
 export const orderDraftSlice = createSlice({

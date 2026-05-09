@@ -239,7 +239,7 @@ export default function AddStopsScreen() {
 
     const handleContinue = () => {
         dispatch(setDraftStops(stops));
-        router.push('/(tab)/orders/vehicle-selection');
+        router.push('/orders/vehicle-selection');
     };
 
     const handleStopAddressChange = (id: string, address: string) => {
@@ -373,7 +373,7 @@ export default function AddStopsScreen() {
                                     </Text>
                                 </View>
                                 <TouchableOpacity
-                                    onPress={() => router.push('/(tab)/orders/pickup-location')}
+                                    onPress={() => router.push('/orders/pickup-location')}
                                     style={styles.dragIconButton}
                                     activeOpacity={0.7}
                                 >
@@ -398,7 +398,7 @@ export default function AddStopsScreen() {
                                     </Text>
                                 </View>
                                 <TouchableOpacity
-                                    onPress={() => router.push('/(tab)/orders/drop-location')}
+                                    onPress={() => router.push('/orders/drop-location')}
                                     style={styles.dragIconButton}
                                     activeOpacity={0.7}
                                 >

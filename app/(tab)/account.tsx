@@ -15,9 +15,9 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useUpdateMyProfileMutation } from "../../../Redux/api/userApi";
-import { useAppDispatch, useAppSelector } from "../../../Redux/hooks";
-import { logout, updateUser } from "../../../Redux/Slice/authSlice";
+import { useUpdateMyProfileMutation } from "../../Redux/api/userApi";
+import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
+import { logout, updateUser } from "../../Redux/Slice/authSlice";
 
 export default function AccountScreen() {
   const router = useRouter();
@@ -213,7 +213,7 @@ export default function AccountScreen() {
         <View style={styles.twoCardRow}>
           <TouchableOpacity
             style={styles.gridCard}
-            onPress={() => router.push("/(tab)/account/address-book")}
+            onPress={() => router.push("/account/address-book")}
           >
             <View style={[styles.iconCircle, { backgroundColor: "#F0FDF4" }]}>
               <Ionicons name="location" size={22} color="#16A34A" />
@@ -223,7 +223,7 @@ export default function AccountScreen() {
 
           <TouchableOpacity
             style={styles.gridCard}
-            onPress={() => router.push("/(tab)/account/help-center")}
+            onPress={() => router.push("/account/help-center")}
           >
             <View style={[styles.iconCircle, { backgroundColor: "#FFF7ED" }]}>
               <Ionicons name="help-buoy" size={22} color="#EA580C" />
@@ -253,7 +253,7 @@ export default function AccountScreen() {
           <View style={styles.referCardRight}>
             <TouchableOpacity
               style={styles.inviteBtn}
-              onPress={() => router.push("/(tab)/account/referral")}
+              onPress={() => router.push("/account/referral")}
             >
               <Text style={styles.inviteBtnText}>Invite</Text>
             </TouchableOpacity>
@@ -264,7 +264,7 @@ export default function AccountScreen() {
         <View style={styles.menuList}>
           <TouchableOpacity
             style={styles.menuItem}
-            onPress={() => router.push("/(tab)/account/edit-profile")}
+            onPress={() => router.push("/account/edit-profile")}
           >
             <View
               style={[styles.menuIconCircle, { backgroundColor: "#F8FAFC" }]}
@@ -279,7 +279,7 @@ export default function AccountScreen() {
 
           <TouchableOpacity
             style={styles.menuItem}
-            onPress={() => router.push("/(tab)/account/terms-of-service")}
+            onPress={() => router.push("/account/terms-of-service")}
           >
             <View
               style={[styles.menuIconCircle, { backgroundColor: "#F8FAFC" }]}
@@ -298,7 +298,7 @@ export default function AccountScreen() {
 
           <TouchableOpacity
             style={styles.menuItem}
-            onPress={() => router.push("/(tab)/account/privacy-policy")}
+            onPress={() => router.push("/account/privacy-policy")}
           >
             <View
               style={[styles.menuIconCircle, { backgroundColor: "#F8FAFC" }]}

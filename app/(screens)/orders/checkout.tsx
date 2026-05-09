@@ -38,15 +38,34 @@ export default function CheckoutScreen() {
         routeDistanceKm,
         routeDurationMin,
     } = useAppSelector((state) => state.orderDraft);
-    const selectedVehicle = VEHICLES[(selectedVehicleId || 'car') as keyof typeof VEHICLES] || VEHICLES.car;
+    const selectedVehicle = selectedVehicleId
+        ? VEHICLES[selectedVehicleId as keyof typeof VEHICLES]
+        : undefined;
+    const selectedVehicleDisplay = selectedVehicle || VEHICLES.car;
+    const missingCheckoutFields = [
+        !pickup?.coordinate ? 'pickup location' : null,
+        !dropoff?.coordinate ? 'dropoff location' : null,
+        !selectedVehicleId ? 'vehicle' : null,
+        routeDistanceKm == null ? 'route distance' : null,
+        routeDurationMin == null ? 'route duration' : null,
+    ].filter(Boolean) as string[];
+    const canCheckout = missingCheckoutFields.length === 0 && !!selectedVehicle;
     const { data: estimateData, isError: isEstimateError, isFetching: isEstimateFetching } = useEstimateOrderPriceQuery({
         distanceKm: routeDistanceKm ?? 0,
         durationMin: routeDurationMin ?? 0,
-        vehicleType: selectedVehicle.vehicleType,
-    });
+        vehicleType: selectedVehicle?.vehicleType ?? 'Car',
+    }, { skip: !canCheckout });
     const [createOrder, { isLoading: isCreatingOrder }] = useCreateOrderMutation();
 
     const handleProceedToPayment = async () => {
+        if (!canCheckout || !pickup?.coordinate || !dropoff?.coordinate || !selectedVehicle) {
+            Alert.alert(
+                'Complete order details',
+                `Please complete ${missingCheckoutFields.join(', ')} before payment.`
+            );
+            return;
+        }
+
         if (!estimate) {
             Alert.alert('Error', 'Price estimate not available');
             return;
@@ -54,30 +73,30 @@ export default function CheckoutScreen() {
 
         const orderPayload = {
             pickup: {
-                latitude: pickup?.latitude ?? 0,
-                longitude: pickup?.longitude ?? 0,
+                latitude: pickup.coordinate.latitude,
+                longitude: pickup.coordinate.longitude,
                 addressLine: pickup?.address,
-                label: pickup?.name,
+                label: pickup?.details || pickup?.personName,
             },
             dropoff: {
-                latitude: dropoff?.latitude ?? 0,
-                longitude: dropoff?.longitude ?? 0,
+                latitude: dropoff.coordinate.latitude,
+                longitude: dropoff.coordinate.longitude,
                 addressLine: dropoff?.address,
-                label: dropoff?.name,
+                label: dropoff?.details || dropoff?.personName,
             },
-            stoppages: stops.map((stop) => ({
-                latitude: stop.latitude,
-                longitude: stop.longitude,
+            stoppages: stops.filter((stop) => stop.coordinate).map((stop) => ({
+                latitude: stop.coordinate!.latitude,
+                longitude: stop.coordinate!.longitude,
                 addressLine: stop.address,
-                label: stop.name,
+                label: stop.address,
             })),
             price: estimate.price,
             vehicleType: selectedVehicle.vehicleType,
-            distanceKm: routeDistanceKm ?? 0,
+            distanceKm: routeDistanceKm,
         };
 
         router.push({
-            pathname: '/(tab)/orders/payment',
+            pathname: '/orders/payment',
             params: { 
                 orderPayload: JSON.stringify(orderPayload),
                 amount: estimate.price.toString()
@@ -88,6 +107,8 @@ export default function CheckoutScreen() {
     const estimate = estimateData?.data;
     const formattedPrice = estimate
         ? `${estimate.currency} ${estimate.price.toFixed(2)}`
+        : !canCheckout
+            ? 'Complete details'
         : isEstimateError
             ? 'Price unavailable'
             : 'Calculating...';
@@ -148,9 +169,11 @@ export default function CheckoutScreen() {
                     <View style={styles.summaryCard}>
                         {/* Vehicle Info */}
                         <View style={styles.vehicleRow}>
-                            <Image source={selectedVehicle.image} style={styles.vehicleImage} resizeMode="contain" />
+                            <Image source={selectedVehicleDisplay.image} style={styles.vehicleImage} resizeMode="contain" />
                             <View style={styles.vehicleInfo}>
-                                <Text style={styles.vehicleName}>{selectedVehicle.name}</Text>
+                                <Text style={styles.vehicleName}>
+                                    {selectedVehicle?.name || 'Select a vehicle'}
+                                </Text>
                                 <Text style={styles.vehicleDetails}>
                                     {isEstimateFetching ? 'Calculating price...' : routeDurationText}
                                 </Text>
@@ -198,10 +221,10 @@ export default function CheckoutScreen() {
                     <TouchableOpacity
                         style={[
                             styles.payButton,
-                            { backgroundColor: estimate && !isCreatingOrder ? '#BEFFB6' : '#F0F0F0' },
+                            { backgroundColor: canCheckout && estimate && !isCreatingOrder ? '#BEFFB6' : '#F0F0F0' },
                         ]}
                         onPress={handleProceedToPayment}
-                        disabled={!estimate}
+                        disabled={!canCheckout || !estimate || isCreatingOrder}
                     >
                         {isCreatingOrder ? (
                             <ActivityIndicator color="#333" />

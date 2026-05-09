@@ -59,6 +59,13 @@ export type CreateOrderResponse = {
   };
 };
 
+export type CancelOrderPayload = {
+  id: string;
+  reason?: string;
+};
+
+export type CancelOrderRequest = string | CancelOrderPayload;
+
 export const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getOrders: builder.query({
@@ -91,12 +98,30 @@ export const orderApi = baseApi.injectEndpoints({
       transformResponse: (response: { data: any }) => response.data,
       providesTags: (result, error, id) => [{ type: "orders", id }],
     }),
-    cancelOrder: builder.mutation<any, string>({
-      query: (id) => ({
-        url: `orders/${id}/cancel`,
-        method: "POST",
+    cancelOrder: builder.mutation<any, CancelOrderRequest>({
+      query: (payload) => {
+        const request =
+          typeof payload === "string" ? { id: payload } : payload;
+
+        return {
+          url: `orders/${request.id}/cancel`,
+          method: "PATCH",
+          body: request.reason ? { reason: request.reason } : {},
+        };
+      },
+      invalidatesTags: (result, error, payload) => {
+        const id = typeof payload === "string" ? payload : payload.id;
+
+        return ["orders", { type: "orders", id }];
+      },
+    }),
+    addReview: builder.mutation<any, { orderId: string; rating: number; comment?: string }>({
+      query: ({ orderId, ...body }) => ({
+        url: `orders/${orderId}/review`,
+        method: "PATCH",
+        body,
       }),
-      invalidatesTags: (result, error, id) => ["orders", { type: "orders", id }],
+      invalidatesTags: (result, error, { orderId }) => [{ type: "orders", id: orderId }],
     }),
   }),
 });
@@ -107,6 +132,7 @@ export const {
   useCreateOrderMutation,
   useGetOrderByIdQuery,
   useCancelOrderMutation,
+  useAddReviewMutation,
 } = orderApi;
 
 export default orderApi;

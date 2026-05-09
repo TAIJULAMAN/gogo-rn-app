@@ -36,7 +36,7 @@ export default function CancelOrderModal({ visible, onClose, onConfirm }: Cancel
                 <TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={onClose} />
 
                 <Animated.View
-                    entering={SlideInDown.springify().damping(15)}
+                    entering={SlideInDown.duration(250)}
                     style={styles.modalContainer}
                 >
                     <View style={styles.handle} />

@@ -3,15 +3,15 @@ import { useRouter } from 'expo-router';
 import React from 'react';
 import { Image, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
-import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
-import { setSelectedVehicle } from '../../../Redux/Slice/orderDraftSlice';
-import { Colors } from '../../../constants/Colors';
-import { useGetMyProfileQuery, useGetNotificationsQuery } from '../../../Redux/api/userApi';
+import { useAppDispatch, useAppSelector } from '../../Redux/hooks';
+import { setSelectedVehicle } from '../../Redux/Slice/orderDraftSlice';
+import { Colors } from '../../constants/Colors';
+import { useGetMyProfileQuery, useGetNotificationsQuery } from '../../Redux/api/userApi';
 
 const VEHICLES = [
-    { id: 'bike', name: 'Bike Delivery', image: require('../../../assets/vehicles/moto.png') },
-    { id: 'car', name: 'Car Delivery', image: require('../../../assets/vehicles/car.png') },
-    { id: 'truck', name: 'Truck Delivery', image: require('../../../assets/vehicles/truck.png') },
+    { id: 'bike', name: 'Bike Delivery', image: require('../../assets/vehicles/moto.png') },
+    { id: 'car', name: 'Car Delivery', image: require('../../assets/vehicles/car.png') },
+    { id: 'truck', name: 'Truck Delivery', image: require('../../assets/vehicles/truck.png') },
 ];
 
 const FEATURES = [
@@ -45,7 +45,7 @@ export default function HomeScreen() {
 
     const handleBookNow = () => {
         dispatch(setSelectedVehicle(activeVehicleId));
-        router.push('/(tab)/orders/create-order');
+        router.push('/orders/create-order');
     };
 
     return (
@@ -61,7 +61,7 @@ export default function HomeScreen() {
                         <View style={styles.userInfo}>
                             <View style={styles.avatarContainer}>
                                 <Image
-                                    source={require('../../../assets/avatar.jpg')}
+                                    source={require('../../assets/avatar.jpg')}
                                     style={styles.avatarImage}
                                     resizeMode="cover"
                                 />
@@ -74,7 +74,7 @@ export default function HomeScreen() {
                         </View>
                         <TouchableOpacity
                             style={styles.notificationButton}
-                            onPress={() => router.push('/notifications')}
+                            onPress={() => router.push('/user/notifications')}
                         >
                             <Ionicons name="notifications-outline" size={24} color="#000" />
                             {unreadCount > 0 && <View style={styles.notificationBadge} />}
@@ -141,7 +141,7 @@ export default function HomeScreen() {
                         style={styles.skylineContainer}
                     >
                         <Image
-                            source={require('../../../assets/Dubai.png')}
+                            source={require('../../assets/Dubai.png')}
                             style={styles.skylineImage}
                         />
                     </Animated.View>

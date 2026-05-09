@@ -5,7 +5,7 @@ import { ActivityIndicator, RefreshControl, ScrollView, StatusBar, StyleSheet, T
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { useGetPaymentHistoryQuery } from '../../../Redux/api/paymentApi';
 import { Colors } from '../../../constants/Colors';
-import { getPaymentArray, toTransactionItem } from './paymentFormatters';
+import { getPaymentArray, toTransactionItem } from '../../../utils/paymentFormatters';
 
 const FILTERS = ['All', 'Payments', 'Refunds'];
 
