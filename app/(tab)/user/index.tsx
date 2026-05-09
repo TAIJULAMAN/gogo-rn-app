@@ -6,6 +6,7 @@ import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import { setSelectedVehicle } from '../../../Redux/Slice/orderDraftSlice';
 import { Colors } from '../../../constants/Colors';
+import { useGetMyProfileQuery, useGetNotificationsQuery } from '../../../Redux/api/userApi';
 
 const VEHICLES = [
     { id: 'bike', name: 'Bike Delivery', image: require('../../../assets/vehicles/moto.png') },
@@ -32,10 +33,15 @@ const FeatureItem = ({ text, index }: { text: string, index: number }) => (
 export default function HomeScreen() {
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const user = useAppSelector((state) => state.auth.user);
+    const { data: profileData } = useGetMyProfileQuery({});
+    const { data: notificationsData } = useGetNotificationsQuery({});
+    const user = useAppSelector((state) => state.auth.user) || profileData?.data;
     const selectedVehicleId = useAppSelector((state) => state.orderDraft.selectedVehicleId);
     const activeVehicleId = selectedVehicleId || 'car';
     const userName = [user?.firstName, user?.lastName].filter(Boolean).join(' ') || user?.name || user?.email || 'User';
+
+    const notifications = notificationsData?.data || [];
+    const unreadCount = notifications.filter((n: any) => !n.isRead).length;
 
     const handleBookNow = () => {
         dispatch(setSelectedVehicle(activeVehicleId));
@@ -68,10 +74,10 @@ export default function HomeScreen() {
                         </View>
                         <TouchableOpacity
                             style={styles.notificationButton}
-                            onPress={() => router.push('/(tab)/user/notifications')}
+                            onPress={() => router.push('/notifications')}
                         >
                             <Ionicons name="notifications-outline" size={24} color="#000" />
-                            <View style={styles.notificationBadge} />
+                            {unreadCount > 0 && <View style={styles.notificationBadge} />}
                         </TouchableOpacity>
                     </Animated.View>
                 </View>

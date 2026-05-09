@@ -69,7 +69,7 @@ export default function InvoiceModal({ visible, onClose, order }: InvoiceModalPr
                                 <Text style={styles.tableHeaderText}>Amount</Text>
                             </View>
 
-                            {order.breakdown.map((item: any, index: number) => (
+                            {order.breakdown?.map((item: any, index: number) => (
                                 <View key={index} style={styles.tableRow}>
                                     <Text style={[styles.tableText, { flex: 1 }]}>
                                         {item.label}

@@ -46,6 +46,14 @@ const authApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["auth"],
     }),
+    refreshToken: builder.mutation({
+      query: (data) => ({
+        url: "auth/refresh-token",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["auth"],
+    }),
   }),
 });
 
@@ -54,6 +62,7 @@ export const {
   useLogInMutation,
   useVerifyUserPhoneMutation,
   useCheckUserByPhoneMutation,
+  useRefreshTokenMutation,
 } = authApi;
 
 export default authApi;

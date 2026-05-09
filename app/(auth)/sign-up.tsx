@@ -51,6 +51,7 @@ export default function SignUpScreen() {
       companyName: companyName || "Demo Co",
       trnVatNo: trnVatNo || "TRN-12345",
       role: requirement,
+      referralCode: referralCode || undefined,
     };
 
     try {
@@ -174,28 +175,6 @@ export default function SignUpScreen() {
               value={trnVatNo}
               onChangeText={setTrnVatNo}
             />
-          </View>
-
-          {/* Requirement Dropdown */}
-          <View style={styles.requirementWrapper}>
-            <Text style={styles.smallLabel}>Requirement</Text>
-            <TouchableOpacity
-              style={styles.dropdownButton}
-              onPress={() => setShowRequirementModal(true)}
-            >
-              <Text
-                style={[
-                  styles.dropdownValue,
-                  requirement !== "I will be using Porter for :" && {
-                    color: "#000",
-                    fontWeight: "600",
-                  },
-                ]}
-              >
-                {requirement}
-              </Text>
-              <Ionicons name="chevron-down" size={16} color="#999" />
-            </TouchableOpacity>
           </View>
 
           {/* Referral Code */}

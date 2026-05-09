@@ -81,6 +81,16 @@ export default function VerifyOTPScreen() {
           throw new Error("Verification response is missing auth data.");
         }
 
+        // Check if the user has the correct role for this app
+        if (user.role !== "User") {
+          Alert.alert(
+            "Access Restricted",
+            "This account is registered as a Driver. Please use the GOGO Driver app to access your account."
+          );
+          setLoading(false);
+          return;
+        }
+
         dispatch(
           setUser({
             user,

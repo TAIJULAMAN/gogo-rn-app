@@ -41,6 +41,17 @@ export const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["addresses", "user"],
     }),
+    getNotifications: builder.query({
+      query: () => "notifications",
+      providesTags: ["notifications"],
+    }),
+    markNotificationAsRead: builder.mutation({
+      query: (id) => ({
+        url: `notifications/${id}/read`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["notifications"],
+    }),
   }),
 });
 
@@ -51,6 +62,8 @@ export const {
   useAddSavedAddressMutation,
   useUpdateSavedAddressMutation,
   useDeleteSavedAddressMutation,
+  useGetNotificationsQuery,
+  useMarkNotificationAsReadMutation,
 } = userApi;
 
 export default userApi;
